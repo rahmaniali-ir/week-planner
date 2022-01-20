@@ -1,0 +1,13 @@
+<div class="bar" [style.color]="task.color"></div>
+
+<main>
+  <header>{{ task.title }}</header>
+
+  <footer>
+    <span>0</span>
+    <span>/</span>
+    <span>{{ task.repetition }}</span>
+
+    <span>{{ task.duration | taskTime }}</span>
+  </footer>
+</main>

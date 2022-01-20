@@ -1,0 +1,27 @@
+<aside>
+  <header>
+    <h1>Tasks</h1>
+  </header>
+
+  <div *ngFor="let task of tasks" class="task">
+    <task-showcase [task]="task"></task-showcase>
+  </div>
+
+  <div class="add">
+    <input
+      #newTaskTitleInput
+      type="text"
+      placeholder="Add new task"
+      [(ngModel)]="newTaskTitle"
+      (keyup.enter)="addNewTask()"
+    />
+
+    <div class="options">
+      <timer-input
+        [(hour)]="newTaskHour"
+        [(minute)]="newTaskMinute"
+        (onSubmit)="addNewTask()"
+      ></timer-input>
+    </div>
+  </div>
+</aside>

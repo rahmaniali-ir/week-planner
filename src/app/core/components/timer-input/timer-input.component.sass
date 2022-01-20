@@ -1,0 +1,28 @@
+
+:host
+  align-items: center
+  border: solid 1px #eee
+  border-radius: var(--radius)
+  box-shadow: 0 4px 8px -2px #eee
+  display: inline-flex
+  font-family: monospace
+
+  input
+    background: none
+    border: none
+    font-family: inherit
+    outline: none
+    padding: 8px
+    text-align: center
+    width: 4ch
+
+    &:focus
+      font-weight: bold
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button
+      display: none
+
+  span
+    opacity: .5
+    user-select: none

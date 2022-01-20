@@ -1,0 +1,23 @@
+<input
+  #hourInput
+  type="number"
+  size="2"
+  min="0"
+  max="24"
+  [(ngModel)]="hour"
+  (input)="updateHour()"
+  (keyup)="focusMinute($event)"
+  (keyup.enter)="submit()"
+/>
+<span>:</span>
+<input
+  #minuteInput
+  type="number"
+  size="2"
+  min="0"
+  max="60"
+  [(ngModel)]="minute"
+  (input)="updateMinute()"
+  (keyup)="focusHour($event)"
+  (keyup.enter)="submit()"
+/>

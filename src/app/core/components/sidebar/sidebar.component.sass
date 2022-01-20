@@ -1,0 +1,80 @@
+
+@keyframes task-in
+  0%
+    opacity: 0
+    transform: translateX(-4px)
+
+  100%
+    opacity: 1
+    transform: translateX(0)
+
+:host
+  display: flex
+  flex-direction: column
+  padding: 0 8px
+  overflow: auto
+  max-height: 100%
+  min-width: 260px
+
+  &::-webkit-scrollbar
+    width: 3px
+
+  &::-webkit-scrollbar-track
+    background: #0001
+
+  &::-webkit-scrollbar-thumb
+    background: #0004
+
+  &::-webkit-scrollbar-thumb:hover
+    background: #0006
+  
+  header
+    h1
+      color: #787878
+      margin: 0
+      padding: 8px 0 16px
+
+  aside
+    flex: 1
+    position: relative
+
+    .task
+      animation: task-in .3s ease forwards
+
+      + .task
+        margin-top: 12px
+
+    .add
+      background: #fff
+      bottom: 0
+      box-shadow: 0 -8px 16px #fff
+      display: flex
+      flex-direction: column
+      margin-top: 12px
+      // opacity: 0
+      padding: 0 0 16px
+      position: sticky
+      transition: all .3s ease
+
+      input
+        border: solid 1px #eee
+        border-radius: var(--radius)
+        box-shadow: 0 4px 8px -2px #eee
+        font-family: inherit
+        min-width: 0
+        outline: none
+        padding: 8px
+        transition: all .3s ease
+        width: 100%
+
+        &:hover, &:focus
+          box-shadow: 0 4px 10px 0 #eee
+
+      .options
+        align-items: center
+        display: flex
+        margin-top: 8px
+
+    &:hover, &:focus-within
+      .add
+        opacity: 1

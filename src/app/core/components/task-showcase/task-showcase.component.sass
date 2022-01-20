@@ -1,0 +1,43 @@
+
+:host
+  border: solid 1px #eee
+  border-radius: var(--radius)
+  box-shadow: 0 4px 8px -2px #eee
+  cursor: pointer
+  display: flex
+  padding: 8px
+  transition: all .3s ease
+  user-select: none
+
+  &:hover
+    box-shadow: 0 4px 10px 0 #eee
+    transform: translateY(-3px)
+
+  .bar
+    color: #eee
+    background: currentColor
+    border-radius: 100px
+    margin-right: 8px
+    width: 5px
+
+  main
+    flex: 1
+
+    header
+      font-weight: bold
+      margin-bottom: 4px
+
+    footer
+      display: flex
+      font-family: monospace
+      width: 100%
+
+      span
+        + span
+          margin-left: 4px
+
+        &:nth-child(even)
+          opacity: .5
+
+        &:last-child
+          margin-left: auto !important
