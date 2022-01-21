@@ -5,6 +5,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TaskTimePipe } from './pipes/task-time.pipe';
 import { FormsModule } from '@angular/forms';
 import { TimerInputComponent } from './components/timer-input/timer-input.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
+import { PlanComponent } from './components/plan/plan.component';
 
 @NgModule({
   declarations: [
@@ -12,6 +14,8 @@ import { TimerInputComponent } from './components/timer-input/timer-input.compon
     SidebarComponent,
     TaskTimePipe,
     TimerInputComponent,
+    TimelineComponent,
+    PlanComponent,
   ],
   imports: [CommonModule, FormsModule],
   exports: [
