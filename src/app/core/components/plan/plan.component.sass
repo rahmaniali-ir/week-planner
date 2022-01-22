@@ -1,0 +1,43 @@
+
+:host
+  table
+    border-spacing: 0
+    width: 100%
+
+    thead tr th
+      padding-bottom: 16px
+
+    tbody
+      tr
+        th
+          font-size: 16px
+          font-weight: normal
+          line-height: 1em
+          padding: 32px 0
+          text-align: left
+          transition: all .3s ease
+          width: 120px
+        
+        &:hover th
+          font-weight: bold
+
+        td
+          background: var(--background-accent)
+          position: relative
+
+        &:first-child
+          td:first-of-type
+            border-top-left-radius: var(--radius)
+
+          td:last-of-type
+            border-top-right-radius: var(--radius)
+
+        &:last-child
+          td:first-of-type
+            border-bottom-left-radius: var(--radius)
+
+          td:last-of-type
+            border-bottom-right-radius: var(--radius)
+
+        + tr td
+          border-top: solid 1px var(--border-color)

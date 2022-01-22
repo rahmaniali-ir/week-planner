@@ -1,1 +1,19 @@
-<timeline></timeline>
+<table>
+  <thead>
+    <tr>
+      <th></th>
+
+      <th>
+        <timeline></timeline>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+    <tr *ngFor="let weekday of weekdays">
+      <th>{{ weekday }}</th>
+
+      <td (mousemove)="onMouseMove($event)"></td>
+    </tr>
+  </tbody>
+</table>

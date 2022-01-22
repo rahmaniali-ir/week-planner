@@ -9,6 +9,7 @@
     transform: translateX(0)
 
 :host
+  background: var(--background-accent)
   display: flex
   flex-direction: column
   padding: 0 8px
@@ -30,7 +31,6 @@
   
   header
     h1
-      color: #787878
       margin: 0
       padding: 8px 0 16px
 
@@ -45,9 +45,9 @@
         margin-top: 12px
 
     .add
-      background: #fff
+      background: var(--background-accent)
       bottom: 0
-      box-shadow: 0 -8px 16px #fff
+      box-shadow: 0 -8px 16px var(--background-accent)
       display: flex
       flex-direction: column
       margin-top: 12px
@@ -57,9 +57,10 @@
       transition: all .3s ease
 
       input
-        border: solid 1px #eee
+        background: var(--background)
+        border: solid 1px var(--border-color)
         border-radius: var(--radius)
-        box-shadow: 0 4px 8px -2px #eee
+        box-shadow: 0 4px 8px -2px #0001
         font-family: inherit
         min-width: 0
         outline: none
@@ -68,7 +69,7 @@
         width: 100%
 
         &:hover, &:focus
-          box-shadow: 0 4px 10px 0 #eee
+          box-shadow: 0 4px 10px 0 #0001
 
       .options
         align-items: center

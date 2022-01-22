@@ -1,9 +1,10 @@
 
 :host
-  background: #eee
+  background: var(--background-accent)
   border-radius: 100px
   display: flex
-  position: relativei
+  overflow: hidden
+  position: relative
   user-select: none
 
   .chunk
@@ -11,6 +12,20 @@
     font-family: monospace
     opacity: .5
     padding: 4px 8px
+    text-align: right
 
-    &:last-child
+    &:last-of-type
       flex: unset
+
+  .caret
+    background: #0005
+    display: block
+    height: 100%
+    opacity: 0
+    position: absolute
+    top: 0
+    transition: left .2s linear, opacity .3s ease
+    width: 1px
+
+    &.show
+      opacity: 1

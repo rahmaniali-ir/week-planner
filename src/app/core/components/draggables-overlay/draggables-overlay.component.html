@@ -1,0 +1,8 @@
+<div
+  *ngIf="draggingTask.body"
+  [ngStyle]="position"
+  class="draggable"
+  [class.out]="draggableOut"
+>
+  <task [task]="draggingTask.body"></task>
+</div>

@@ -1,3 +1,9 @@
 <div *ngFor="let chunk of planHoursArray" class="chunk">
   {{ chunk }}
 </div>
+
+<span
+  class="caret"
+  [class.show]="showCaret && caretOffset > 0"
+  [style.left]="caretOffset + 'px'"
+></span>
