@@ -17,8 +17,10 @@ export class DraggableDirective {
 
   constructor(private taskService: TasksService) {}
 
-  @HostListener('mousedown')
-  private onMouseDown() {
+  @HostListener('mousedown', ['$event'])
+  private onMouseDown(e: MouseEvent) {
+    if (e.button !== 0) return;
+
     this.taskService.draggingTask = this.draggable;
   }
 }
