@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Task } from '../../interfaces/task';
+import { TasksService } from '../../services/tasks.service';
 
 @Component({
   selector: 'task',
@@ -15,7 +16,7 @@ export class TaskComponent implements OnInit {
     color: '#eee',
   };
 
-  constructor() {}
+  constructor(private tasksService: TasksService) {}
 
   ngOnInit(): void {}
 
@@ -33,5 +34,11 @@ export class TaskComponent implements OnInit {
 
   public get color() {
     return this.task.color || '#eee';
+  }
+
+  @HostListener('mousemove', ['$event'])
+  @HostListener('mouseenter', ['$event'])
+  private onMouseEnter(e: MouseEvent) {
+    e.stopPropagation();
   }
 }

@@ -3,10 +3,6 @@
     <h1>Tasks</h1>
   </header>
 
-  <div *ngFor="let task of tasks" class="task">
-    <task-showcase [task]="task" [draggable]="task"></task-showcase>
-  </div>
-
   <div class="add">
     <input
       #newTaskTitleInput

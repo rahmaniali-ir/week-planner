@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Task } from '../interfaces/task';
+import { PlannedTask, Task } from '../interfaces/task';
 import { Color } from '../models/color';
 
 @Injectable({
@@ -30,10 +30,12 @@ export class TasksService {
       color: '#784ee0',
     },
   ];
+  public plannedTasks: PlannedTask[] = [];
 
   public planHourUnit: number = 0;
-  public hoveringPlanHour: number = 0;
+  public hoveringPlanTimeUnits: number = 0;
   public showTimelineCaret: boolean = false;
+  public planMouseOffset: number = 0;
 
   // drag feature
   public draggingTask: Task | null = null;
@@ -50,10 +52,28 @@ export class TasksService {
       this.draggingTask = null;
       this.dragging.next(null);
     });
+
+    this.plannedTasks.push({
+      task: this.tasks[0],
+      start: 5,
+      weekday: 'Saturday',
+    });
+
+    this.plannedTasks.push({
+      task: this.tasks[1],
+      start: 10,
+      weekday: 'Monday',
+    });
+
+    this.plannedTasks.push({
+      task: this.tasks[2],
+      start: 20,
+      weekday: 'Friday',
+    });
   }
 
   public get timelineCaretOffset() {
-    return this.planHourUnit * this.hoveringPlanHour;
+    return this.planHourUnit * this.hoveringPlanTimeUnits;
   }
 
   public addNewTask(title: string, duration: number) {
@@ -69,6 +89,7 @@ export class TasksService {
   }
 
   public setPlannerHourOffset(offset: number = 0) {
-    this.hoveringPlanHour = Math.floor(offset / this.planHourUnit);
+    this.planMouseOffset = offset;
+    this.hoveringPlanTimeUnits = Math.floor(offset / this.planHourUnit);
   }
 }

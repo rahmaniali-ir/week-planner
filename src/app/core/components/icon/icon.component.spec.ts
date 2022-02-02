@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DraggablesOverlayComponent } from './draggables-overlay.component';
+import { IconComponent } from './icon.component';
 
-describe('DraggablesOverlayComponent', () => {
-  let component: DraggablesOverlayComponent;
-  let fixture: ComponentFixture<DraggablesOverlayComponent>;
+describe('IconComponent', () => {
+  let component: IconComponent;
+  let fixture: ComponentFixture<IconComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DraggablesOverlayComponent ]
+      declarations: [ IconComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DraggablesOverlayComponent);
+    fixture = TestBed.createComponent(IconComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

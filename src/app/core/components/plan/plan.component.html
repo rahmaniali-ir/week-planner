@@ -13,7 +13,16 @@
     <tr *ngFor="let weekday of weekdays">
       <th>{{ weekday }}</th>
 
-      <td (mousemove)="onMouseMove($event)"></td>
+      <td
+        (mousemove)="onMouseMove($event)"
+        (mouseup)="onMouseUp(weekday, $event)"
+      >
+        <task
+          *ngFor="let planned of tasksOfWeekday(weekday)"
+          [task]="planned.task"
+          [style.left]="planned.position.start + 'px'"
+        ></task>
+      </td>
     </tr>
   </tbody>
 </table>

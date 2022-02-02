@@ -1,9 +1,27 @@
-<div *ngFor="let chunk of planHoursArray" class="chunk">
-  {{ chunk }}
-</div>
+<nav>
+  <div
+    class="hovered-time"
+    [class.show]="showCaret"
+    [class.pop]="isHoveringWholeHour"
+    [class.light]="isHoveringMorning"
+    [class.dark]="!isHoveringMorning"
+    [style.left]="caretOffset + 'px'"
+  >
+    <icon *ngIf="isHoveringMorning" name="circle"></icon>
+    <icon *ngIf="!isHoveringMorning" name="moon"></icon>
 
-<span
-  class="caret"
-  [class.show]="showCaret && caretOffset > 0"
-  [style.left]="caretOffset + 'px'"
-></span>
+    <span>{{ hoveringTimeUnits | taskTime }}</span>
+  </div>
+</nav>
+
+<main>
+  <div *ngFor="let chunk of planHoursArray" class="chunk">
+    <span>{{ chunk }}</span>
+  </div>
+
+  <div
+    class="caret"
+    [class.show]="showCaret"
+    [style.left]="caretOffset + 'px'"
+  ></div>
+</main>

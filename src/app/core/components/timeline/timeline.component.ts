@@ -11,7 +11,7 @@ export class TimelineComponent implements OnInit {
   public planHoursArray: number[] = [];
 
   constructor(private tasksService: TasksService) {
-    for (let i = 1; i < this.planHours; i++) this.planHoursArray.push(i);
+    for (let i = 1; i <= this.planHours; i++) this.planHoursArray.push(i);
   }
 
   ngOnInit(): void {}
@@ -22,5 +22,17 @@ export class TimelineComponent implements OnInit {
 
   public get caretOffset() {
     return this.tasksService.timelineCaretOffset;
+  }
+
+  public get hoveringTimeUnits() {
+    return this.tasksService.hoveringPlanTimeUnits * 15;
+  }
+
+  public get isHoveringWholeHour() {
+    return this.hoveringTimeUnits % 60 === 0;
+  }
+
+  public get isHoveringMorning() {
+    return this.tasksService.hoveringPlanTimeUnits < 60;
   }
 }
