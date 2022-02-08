@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { PlannedTask } from '../../interfaces/task';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Weekday } from '../../interfaces/week';
+import { Color } from '../../models/color';
+import { Schedule } from '../../models/schedule';
 import { TasksService } from '../../services/tasks.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { TasksService } from '../../services/tasks.service';
   styleUrls: ['./plan.component.sass'],
 })
 export class PlanComponent implements OnInit {
+  @ViewChild('body') body!: ElementRef<HTMLElement>;
   public weekdays: Weekday[] = [
     'Saturday',
     'Sunday',
@@ -20,47 +22,43 @@ export class PlanComponent implements OnInit {
 
   constructor(private tasksService: TasksService) {}
 
-  ngOnInit(): void {}
-
-  public get plannedTasks() {
-    return this.tasksService.plannedTasks;
-  }
-
-  private taskPosition(planned: PlannedTask) {
-    const unit = this.tasksService.planHourUnit;
-
-    const start = planned.start * unit;
-    const duration = planned.task.duration * unit;
-
-    return {
-      start,
-      end: start + duration,
+  ngOnInit(): void {
+    const updateUnits = () => {
+      this.tasksService.panelUnit.updateTotal(
+        this.body.nativeElement.clientWidth
+      );
     };
+
+    setTimeout(updateUnits, 0);
+    window.addEventListener('resize', updateUnits);
   }
 
-  public tasksOfWeekday(weekday: Weekday) {
-    return this.plannedTasks
-      .filter((task) => task.weekday === weekday)
-      .map((planned) => {
-        planned['position'] = this.taskPosition(planned);
-        return planned;
-      });
+  public get resizingTask() {
+    return this.tasksService.resizingTask;
   }
 
-  public onMouseEnter() {
-    this.tasksService.showTimelineCaret = true;
+  public get isChanging() {
+    return this.tasksService.isChangingTask;
   }
 
-  public onMouseLeave() {
-    this.tasksService.showTimelineCaret = false;
+  public weekdayTasks(weekday: Weekday) {
+    return this.tasksService.tasks.filter(
+      (task) => task.time.weekday === weekday
+    );
   }
 
-  public onMouseMove(e: any) {
-    this.tasksService.planHourUnit = (e.target.clientWidth - 1) / (24 * 4);
-    this.tasksService.setPlannerHourOffset(e.offsetX);
+  public onMouseMove(e: MouseEvent, weekday: Weekday) {
+    if (this.isChanging) {
+      const { offsetX } = e;
+      this.tasksService.mouseX = offsetX;
+
+      this.tasksService.moveChangingTaskToWeekday(weekday);
+      this.tasksService.updateChangingTask(offsetX);
+    }
   }
 
-  public onMouseUp(weekday: Weekday, e: any) {
-    console.log(weekday, this.tasksService.draggingTask, e);
+  public onDblClick(weekday: Weekday, e: MouseEvent) {
+    const { offsetX } = e;
+    this.tasksService.createTask(weekday, offsetX);
   }
 }

@@ -1,13 +1,16 @@
-<div class="bar" [style.color]="color"></div>
+<div class="task">
+  <div class="bar" [style.color]="color.hsl"></div>
 
-<main>
-  <header>{{ title }}</header>
+  <main>
+    <header *ngIf="title">{{ title }}</header>
+    <header *ngIf="!title" class="placeholder">Task {{ id }}</header>
 
-  <footer>
-    <span>8:30</span>
-    <span>/</span>
-    <span class="margin">9:30</span>
+    <footer>
+      <span>{{ time.from | taskTime }}</span>
+      <span>/</span>
+      <span class="margin">{{ time.to | taskTime }}</span>
 
-    <span>{{ duration | taskTime }}</span>
-  </footer>
-</main>
+      <span class="diration">{{ time.duration | taskTime }}</span>
+    </footer>
+  </main>
+</div>

@@ -1,95 +1,221 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { PlannedTask, Task } from '../interfaces/task';
+import { Edge } from '../interfaces/edge';
+import { Task } from '../interfaces/task';
+import { Weekday } from '../interfaces/week';
 import { Color } from '../models/color';
+import { PixelRatio } from '../models/pixelRatio';
+import { Schedule } from '../models/schedule';
+
+const TIME_BLOCKS = 24;
+const DEFAULT_DURATION = 8;
 
 @Injectable({
   providedIn: 'root',
 })
 export class TasksService {
-  public tasks: Task[] = [
-    {
-      id: 1,
-      title: 'Task 1',
-      repetition: 3,
-      duration: 60,
-      color: '#2abc62',
-    },
-    {
-      id: 2,
-      title: 'Task 2',
-      repetition: 4,
-      duration: 30,
-      color: '#eb4a62',
-    },
-    {
-      id: 3,
-      title: 'Task 3',
-      repetition: 5,
-      duration: 15,
-      color: '#784ee0',
-    },
-  ];
-  public plannedTasks: PlannedTask[] = [];
+  public tasks: Task[] = [];
+  public panelUnit: PixelRatio = new PixelRatio(TIME_BLOCKS);
 
-  public planHourUnit: number = 0;
-  public hoveringPlanTimeUnits: number = 0;
-  public showTimelineCaret: boolean = false;
-  public planMouseOffset: number = 0;
-
-  // drag feature
-  public draggingTask: Task | null = null;
-  public dragging: Subject<MouseEvent | null> = new Subject();
+  public mouseX: number = 0;
+  public movingTaskOffset: number = 0;
+  public movingTaskAnchor: number = 0;
+  public movingUnitDifference: number = 0;
+  public changingTaskSubject: Subject<Task | null> = new Subject();
+  public changingTaskUpdateSubject: Subject<Task | null> = new Subject();
+  public changingEdge: Edge = 'none';
+  private _isChangingTask: boolean = false;
+  private _originalChangingTask: Task | null = null;
+  private _changingTask: Task | null = null;
 
   constructor() {
-    // mouse move
-    window.addEventListener('mousemove', (e) => {
-      if (this.draggingTask) this.dragging.next(e);
-    });
-
-    // mouse up
     window.addEventListener('mouseup', () => {
-      this.draggingTask = null;
-      this.dragging.next(null);
+      this.changingTaskSubject.next(null);
     });
 
-    this.plannedTasks.push({
-      task: this.tasks[0],
-      start: 5,
-      weekday: 'Saturday',
-    });
+    this.changingTaskSubject.subscribe((task) => {
+      if (task) {
+        this._isChangingTask = true;
+        this._changingTask = task;
+        this._originalChangingTask = { ...task };
+        this._originalChangingTask.time = new Schedule(
+          this._changingTask.time.weekday,
+          this._changingTask.time.from,
+          this._changingTask.time.to
+        );
 
-    this.plannedTasks.push({
-      task: this.tasks[1],
-      start: 10,
-      weekday: 'Monday',
-    });
-
-    this.plannedTasks.push({
-      task: this.tasks[2],
-      start: 20,
-      weekday: 'Friday',
-    });
-  }
-
-  public get timelineCaretOffset() {
-    return this.planHourUnit * this.hoveringPlanTimeUnits;
-  }
-
-  public addNewTask(title: string, duration: number) {
-    if (!title) throw new Error("Task title can't be empty!");
-
-    this.tasks.push({
-      id: 4,
-      title: title.trim(),
-      duration,
-      repetition: 0,
-      color: Color.random(),
+        setTimeout(() => {
+          this.movingTaskAnchor = this.mouseX;
+        }, 0);
+      } else {
+        this.changingEdge = 'none';
+        this._isChangingTask = false;
+        this._changingTask = null;
+        this.movingTaskOffset = 0;
+      }
     });
   }
 
-  public setPlannerHourOffset(offset: number = 0) {
-    this.planMouseOffset = offset;
-    this.hoveringPlanTimeUnits = Math.floor(offset / this.planHourUnit);
+  public get isChangingTask() {
+    return this._isChangingTask;
+  }
+
+  public get resizingTask() {
+    return this._changingTask;
+  }
+
+  public createTask(weekday: Weekday = 'Saturday', offset: number = 0) {
+    const timeBlocks = this.panelUnit.toPerfectUnit(offset);
+
+    const task: Task = {
+      id: this.tasks.length,
+      title: '',
+      subtasks: [],
+      time: new Schedule(weekday, timeBlocks, timeBlocks + DEFAULT_DURATION),
+      color: Color.random().normalize(),
+    };
+
+    const nearestRightSibling = this.getNearestRightSiblingTask(task);
+
+    if (nearestRightSibling)
+      task.time.to = Math.min(nearestRightSibling.time.from, task.time.to);
+
+    if (task.time.duration < DEFAULT_DURATION) {
+      const idealFrom = Math.max(0, task.time.to - DEFAULT_DURATION);
+
+      const nearestLeftSibling = this.getInRangeTasks(
+        task.time.weekday,
+        idealFrom,
+        task.time.from
+      ).sort((a, b) => (b.time.to < a.time.to ? -1 : 1))?.[0];
+      task.time.from = idealFrom;
+
+      if (nearestLeftSibling)
+        task.time.from = Math.max(nearestLeftSibling.time.to, task.time.from);
+    }
+
+    if (task.time.duration <= 1) return;
+
+    this.tasks.push(task);
+
+    this.changingTaskUpdateSubject.next(task);
+  }
+
+  public moveChangingTaskToWeekday(weekday: Weekday) {
+    if (!this.isChangingTask || this.changingEdge !== 'center') return;
+
+    const inRange = this.getInRangeTasks(
+      weekday,
+      this._changingTask!.time.from,
+      this._changingTask!.time.to
+    ).filter((task) => task.id !== this._changingTask!.id);
+
+    if (inRange.length === 0) this._changingTask!.time.weekday = weekday;
+  }
+
+  public getSiblingTasks(task: Task) {
+    return this.tasks
+      .filter((t) => t.id !== task.id)
+      .filter((t) => t.time.weekday === task.time.weekday);
+  }
+
+  public getNearestLeftSiblingTask(task: Task) {
+    return this.getSiblingTasks(task)
+      .filter((t) => t.time.to <= task.time.from)
+      .sort((a, b) => (b.time.to > a.time.to ? 1 : -1))?.[0];
+  }
+
+  public getNearestRightSiblingTask(task: Task) {
+    return this.getSiblingTasks(task)
+      .filter((t) => t.time.from >= task.time.from)
+      .sort((a, b) => (b.time.to < a.time.to ? 1 : -1))?.[0];
+  }
+
+  public getInRangeTasks(weekday: Weekday, from: number, to: number) {
+    return this.tasks
+      .filter((task) => task.time.weekday === weekday)
+      .filter((task) => task.time.to > from && task.time.from < to);
+  }
+
+  public updateChangingTask(offset: number = 0) {
+    if (!this._changingTask || this.changingEdge === 'none') return;
+
+    const units = this.panelUnit.toPerfectUnit(offset);
+
+    const afterEffect = new Schedule();
+    afterEffect.from = this._changingTask.time.from;
+    afterEffect.to = this._changingTask.time.to;
+
+    this.changingTaskUpdateSubject.next(this._changingTask);
+
+    if (this.changingEdge === 'left') {
+      afterEffect.from = units;
+
+      if (afterEffect.duration < 1) return;
+
+      if (this.preventLeftOverlap(units)) this._changingTask.time.from = units;
+      return;
+    }
+
+    if (this.changingEdge === 'right') {
+      afterEffect.to = units;
+
+      if (afterEffect.duration < 1) return;
+
+      if (this.preventRightOverlap(units)) this._changingTask.time.to = units;
+      return;
+    }
+
+    if (this.changingEdge === 'center') {
+      const delta = this.mouseX - this.movingTaskAnchor;
+      const diff = this.panelUnit.toPerfectUnit(delta);
+
+      afterEffect.from = Math.max(
+        0,
+        this._originalChangingTask!.time.from + diff
+      );
+      afterEffect.to = Math.min(
+        this._originalChangingTask!.time.to + diff,
+        24 * 4
+      );
+
+      if (afterEffect.duration !== this._originalChangingTask!.time.duration)
+        return;
+
+      if (this.preventLeftOverlap(afterEffect.from))
+        this._changingTask.time.from = afterEffect.from;
+
+      if (this.preventRightOverlap(afterEffect.to))
+        this._changingTask.time.to = afterEffect.to;
+    }
+  }
+
+  private preventLeftOverlap(units: number) {
+    if (!this._changingTask || this.changingEdge === 'none') return;
+
+    const nearestLeftSibling = this.getNearestLeftSiblingTask(
+      this._changingTask
+    );
+
+    if ((nearestLeftSibling && nearestLeftSibling.time.to > units) || units < 0)
+      return false;
+
+    return true;
+  }
+
+  private preventRightOverlap(units: number) {
+    if (!this._changingTask || this.changingEdge === 'none') return;
+
+    const nearestRightSibling = this.getNearestRightSiblingTask(
+      this._changingTask
+    );
+
+    if (
+      (nearestRightSibling && nearestRightSibling.time.from < units) ||
+      units > 24 * 4
+    )
+      return false;
+
+    return true;
   }
 }

@@ -1,50 +1,122 @@
 
 :host
-  background: var(--background)
-  border: solid 1px var(--border-color)
-  border-radius: var(--radius)
-  box-shadow: 0 4px 8px -2px #0001
-  cursor: pointer
-  display: flex
-  padding: 8px
-  transition: box-shadow .3s ease, transform .3s ease
+  padding: 0 4px
   user-select: none
 
   &:hover
-    box-shadow: 0 4px 10px 0 #0001
-    transform: translateY(-3px)
+    .task
+      box-shadow: 0 4px 10px 0 #0001
 
-  > *
+      .bar
+        box-shadow: 1px 0 8px -1px currentColor
+        transform: translateX(-3px)
+
+  &.changing
+    cursor: ew-resize
     pointer-events: none
 
-  .bar
-    color: #eee
-    background: currentColor
-    border-radius: 100px
-    margin-right: 8px
-    width: 5px
+  &[size="medium"],
+  &[size="small"]
+    .task
+      header
+        padding-inline-end: 1em
 
-  main
-    flex: 1
+      footer
+        span:last-child
+          transform: translateX(100%) rotate(-90deg)
 
-    header
-      font-weight: bold
-      margin-bottom: 4px
+  &[size="small"],
+  &[size="tiny"],
+  &[size="narrow"]
+    .task
+      header
+        transform: translateY(35%)
 
-    footer
-      display: flex
-      font-family: monospace
+      footer
+        opacity: 0
+        transform: translateY(30%)
+
+  &[size="tiny"],
+  &[size="narrow"]
+    .task
+      header
+        font-size: .8em
+        transform: translateY(55%) !important
+
+  &[size="narrow"]
+    padding: 0 2px
+
+    &:hover
+      .bar
+        box-shadow: 0 0 8px -1px currentColor !important
+        transform: scale(1.1) !important
+
+    .task
+      padding: 8px 4px
+
+      header
+        opacity: 0
+
+  .task
+    background: var(--background)
+    border: solid 1px var(--border-color)
+    border-radius: var(--radius)
+    box-shadow: 0 4px 8px -2px #0001
+    cursor: pointer
+    display: flex
+    overflow: hidden
+    padding: 8px
+    pointer-events: none
+    transition: box-shadow .3s ease, transform .3s ease
+    max-width: 100%
+
+    > *
+      pointer-events: none
+
+    .bar
+      color: #eee
+      background: currentColor
+      border-radius: 100px
+      margin-right: 8px
+      min-width: 5px
+      transition: all .3s ease
+      width: 5px
+
+    main
+      flex: 1
       width: 100%
 
-      span
-        &.margin
-          margin-right: 8px
+      header
+        font-weight: bold
+        margin-bottom: 4px
+        max-width: 100%
+        overflow: hidden
+        text-overflow: ellipsis
+        transition: all .3s ease
+        white-space: nowrap
 
-        + span
-          margin-left: 4px
+        &.placeholder
+          font-weight: 400
+          opacity: .7
 
-        &:nth-child(even)
-          opacity: .5
+      footer
+        display: flex
+        font-family: monospace
+        position: relative
+        transition: all .3s ease
+        width: 100%
 
-        &:last-child
-          margin-left: auto !important
+        span
+          &.margin
+            margin-right: 8px
+
+          + span
+            margin-left: 4px
+
+          &:nth-child(even)
+            opacity: .5
+
+          &:last-child
+            margin-left: auto !important
+            transform-origin: bottom left
+            transition: all .3s ease

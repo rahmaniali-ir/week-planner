@@ -1,16 +1,6 @@
 <nav>
-  <div
-    class="hovered-time"
-    [class.show]="showCaret"
-    [class.pop]="isHoveringWholeHour"
-    [class.light]="isHoveringMorning"
-    [class.dark]="!isHoveringMorning"
-    [style.left]="caretOffset + 'px'"
-  >
-    <icon *ngIf="isHoveringMorning" name="circle"></icon>
-    <icon *ngIf="!isHoveringMorning" name="moon"></icon>
-
-    <span>{{ hoveringTimeUnits | taskTime }}</span>
+  <div class="hovered-time">
+    <span>{{ 0 | taskTime }}</span>
   </div>
 </nav>
 
@@ -19,9 +9,5 @@
     <span>{{ chunk }}</span>
   </div>
 
-  <div
-    class="caret"
-    [class.show]="showCaret"
-    [style.left]="caretOffset + 'px'"
-  ></div>
+  <div class="caret" [style.left]="0 + 'px'"></div>
 </main>

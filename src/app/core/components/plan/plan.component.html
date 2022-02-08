@@ -3,26 +3,26 @@
     <tr>
       <th></th>
 
-      <th>
+      <th #body>
         <timeline></timeline>
       </th>
     </tr>
   </thead>
 
-  <tbody (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  <tbody [class.changing]="isChanging">
     <tr *ngFor="let weekday of weekdays">
       <th>{{ weekday }}</th>
 
       <td
-        (mousemove)="onMouseMove($event)"
-        (mouseup)="onMouseUp(weekday, $event)"
+        (mousemove)="onMouseMove($event, weekday)"
+        (dblclick)="onDblClick(weekday, $event)"
       >
-        <task
-          *ngFor="let planned of tasksOfWeekday(weekday)"
-          [task]="planned.task"
-          [style.left]="planned.position.start + 'px'"
-        ></task>
+        <task *ngFor="let task of weekdayTasks(weekday)" [task]="task"></task>
       </td>
     </tr>
   </tbody>
 </table>
+
+<div>
+  {{ resizingTask | json }}
+</div>

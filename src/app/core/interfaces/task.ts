@@ -1,16 +1,17 @@
-import { Weekday } from './week';
+import { Color } from '../models/color';
+import { Schedule } from '../models/schedule';
 
 export interface Task {
   id: number;
-  color?: string;
+  color: Color;
   title: string;
-  repetition: number;
-  duration: number;
+  time: Schedule;
+  subtasks: Subtask[];
 }
 
-export interface PlannedTask {
-  task: Task;
-  weekday: Weekday;
-  start: number;
-  [key: string]: any;
+export interface Subtask {
+  id: number;
+  title: string;
+  times: number;
+  color: Color;
 }
