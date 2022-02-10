@@ -8,6 +8,9 @@ import { TimelineComponent } from './components/timeline/timeline.component';
 import { PlanComponent } from './components/plan/plan.component';
 import { TaskComponent } from './components/task/task.component';
 import { IconComponent } from './components/icon/icon.component';
+import { ModalModule } from '../modal/modal.module';
+import { ViewTaskModalComponent } from './components/view-task-modal/view-task-modal.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 
 @NgModule({
   declarations: [
@@ -18,8 +21,10 @@ import { IconComponent } from './components/icon/icon.component';
     PlanComponent,
     TaskComponent,
     IconComponent,
+    ViewTaskModalComponent,
+    ConfirmModalComponent,
   ],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ModalModule],
   exports: [IconComponent, SidebarComponent],
 })
 export class CoreModule {}

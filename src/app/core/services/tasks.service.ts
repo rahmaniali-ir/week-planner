@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { ModalService } from 'src/app/modal/services/modal.service';
+import { ConfirmModalComponent } from '../components/confirm-modal/confirm-modal.component';
+import { ViewTaskModalComponent } from '../components/view-task-modal/view-task-modal.component';
 import { Edge } from '../interfaces/edge';
 import { Task } from '../interfaces/task';
 import { Weekday } from '../interfaces/week';
@@ -28,7 +31,7 @@ export class TasksService {
   private _originalChangingTask: Task | null = null;
   private _changingTask: Task | null = null;
 
-  constructor() {
+  constructor(private modalService: ModalService) {
     window.addEventListener('mouseup', () => {
       this.changingTaskSubject.next(null);
     });
@@ -54,6 +57,16 @@ export class TasksService {
         this.movingTaskOffset = 0;
       }
     });
+
+    // const modal = this.modalService.open<string>(ViewTaskModalComponent);
+    // modal.result.subscribe(
+    //   (res) => {
+    //     console.log(res);
+    //   },
+    //   (err) => {
+    //     console.warn(err);
+    //   }
+    // );
   }
 
   public get isChangingTask() {
