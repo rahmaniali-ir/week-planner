@@ -138,11 +138,20 @@ export class TasksService {
     } catch (e) {}
   }
 
+  private getNextId() {
+    if (!this.tasks.length) return 1;
+
+    const ids = this.tasks.map((t) => t.id).sort((a, b) => a - b);
+
+    const lastId = ids.pop()!;
+    return lastId + 1;
+  }
+
   public createTask(weekday: Weekday = 'Saturday', offset: number = 0) {
     const timeBlocks = this.panelUnit.toPerfectUnit(offset);
 
     const task: Task = {
-      id: this.tasks.length,
+      id: this.getNextId(),
       title: '',
       subtasks: [],
       time: new Schedule(weekday, timeBlocks, timeBlocks + DEFAULT_DURATION),
