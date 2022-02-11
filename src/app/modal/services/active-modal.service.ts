@@ -7,9 +7,7 @@ import { ModalRef } from '../types/modalRef';
 export class ActiveModal {
   public modalRef: ModalRef | null = null;
 
-  constructor() {
-    console.log('INJECTED!');
-  }
+  constructor() {}
 
   public close(data: any = null) {
     this.modalRef?.close(data);

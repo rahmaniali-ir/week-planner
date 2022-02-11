@@ -1,7 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Weekday } from '../../interfaces/week';
-import { Color } from '../../models/color';
-import { Schedule } from '../../models/schedule';
 import { TasksService } from '../../services/tasks.service';
 
 @Component({
@@ -17,6 +15,7 @@ export class PlanComponent implements OnInit {
     'Monday',
     'Tuesday',
     'Wednesday',
+    'Thursday',
     'Friday',
   ];
 

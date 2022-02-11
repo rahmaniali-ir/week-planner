@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { ModalService } from 'src/app/modal/services/modal.service';
 import { ConfirmModalComponent } from '../components/confirm-modal/confirm-modal.component';
 import { ViewTaskModalComponent } from '../components/view-task-modal/view-task-modal.component';
+import { ViewTaskComponent } from '../components/view-task/view-task.component';
 import { Edge } from '../interfaces/edge';
 import { Task } from '../interfaces/task';
 import { Weekday } from '../interfaces/week';
@@ -58,15 +59,18 @@ export class TasksService {
       }
     });
 
-    // const modal = this.modalService.open<string>(ViewTaskModalComponent);
-    // modal.result.subscribe(
-    //   (res) => {
-    //     console.log(res);
-    //   },
-    //   (err) => {
-    //     console.warn(err);
-    //   }
-    // );
+    this.loadFromLocalStorage();
+
+    window.addEventListener('beforeunload', this.saveToLocalStorage.bind(this));
+    window.addEventListener('blur', this.saveToLocalStorage.bind(this));
+
+    // this.viewTask({
+    //   id: 0,
+    //   title: '',
+    //   time: new Schedule(),
+    //   subtasks: [],
+    //   color: new Color(),
+    // });
   }
 
   public get isChangingTask() {
@@ -75,6 +79,63 @@ export class TasksService {
 
   public get resizingTask() {
     return this._changingTask;
+  }
+
+  private preventLeftOverlap(units: number) {
+    if (!this._changingTask || this.changingEdge === 'none') return;
+
+    const nearestLeftSibling = this.getNearestLeftSiblingTask(
+      this._changingTask
+    );
+
+    if ((nearestLeftSibling && nearestLeftSibling.time.to > units) || units < 0)
+      return false;
+
+    return true;
+  }
+
+  private preventRightOverlap(units: number) {
+    if (!this._changingTask || this.changingEdge === 'none') return;
+
+    const nearestRightSibling = this.getNearestRightSiblingTask(
+      this._changingTask
+    );
+
+    if (
+      (nearestRightSibling && nearestRightSibling.time.from < units) ||
+      units > 24 * 4
+    )
+      return false;
+
+    return true;
+  }
+
+  private getTaskIndex(task: Task) {
+    return this.tasks.findIndex((t) => t === task);
+  }
+
+  private saveToLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(this.tasks));
+  }
+
+  private loadFromLocalStorage() {
+    const saved = localStorage.getItem('tasks');
+    if (!saved) return;
+
+    try {
+      const tasks = JSON.parse(saved) as Task[];
+
+      this.tasks = tasks.map((t) => {
+        const { h, s, l } = t.color as any;
+        const { weekday, from, to } = t.time;
+
+        return {
+          ...t,
+          time: new Schedule(weekday, from, to),
+          color: new Color(h, s, l),
+        };
+      });
+    } catch (e) {}
   }
 
   public createTask(weekday: Weekday = 'Saturday', offset: number = 0) {
@@ -87,6 +148,9 @@ export class TasksService {
       time: new Schedule(weekday, timeBlocks, timeBlocks + DEFAULT_DURATION),
       color: Color.random().normalize(),
     };
+
+    if (this.getInRangeTasks(weekday, task.time.from, task.time.to).length > 0)
+      return;
 
     const nearestRightSibling = this.getNearestRightSiblingTask(task);
 
@@ -203,32 +267,23 @@ export class TasksService {
     }
   }
 
-  private preventLeftOverlap(units: number) {
-    if (!this._changingTask || this.changingEdge === 'none') return;
+  public viewTask(task: Task) {
+    const modal = this.modalService.open<Task>(ViewTaskComponent, {
+      input: {
+        task: { ...task },
+      },
+    });
 
-    const nearestLeftSibling = this.getNearestLeftSiblingTask(
-      this._changingTask
-    );
-
-    if ((nearestLeftSibling && nearestLeftSibling.time.to > units) || units < 0)
-      return false;
-
-    return true;
+    modal.result.subscribe({
+      next: (updatedTask) => {
+        const i = this.getTaskIndex(task);
+        this.tasks[i] = updatedTask!;
+      },
+      error: () => {},
+    });
   }
 
-  private preventRightOverlap(units: number) {
-    if (!this._changingTask || this.changingEdge === 'none') return;
-
-    const nearestRightSibling = this.getNearestRightSiblingTask(
-      this._changingTask
-    );
-
-    if (
-      (nearestRightSibling && nearestRightSibling.time.from < units) ||
-      units > 24 * 4
-    )
-      return false;
-
-    return true;
+  public removeTask(id: number) {
+    this.tasks = this.tasks.filter((t) => t.id !== id);
   }
 }

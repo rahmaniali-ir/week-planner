@@ -109,7 +109,8 @@ export class TaskComponent implements OnInit {
   private onDblClick(e: MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    console.log('DBL');
+
+    this.tasksService.viewTask(this.task);
   }
 
   public get elementWidth() {

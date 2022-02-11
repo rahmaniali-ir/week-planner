@@ -4,16 +4,43 @@ import { ModalComponent } from '../components/modal/modal.component';
 
 export type ModalRefType = ComponentRef<ModalComponent>;
 
+export type ModalOptions = {
+  persistent?: boolean;
+  input?: { [key in string]: any };
+};
+
 export class ModalRef<T = any> {
   private component: any;
   private modalRef: ModalRefType;
   private appRef: ApplicationRef;
   public result: Subject<T | null> = new Subject<T | null>();
+  private _options: ModalOptions = {};
 
-  constructor(appRef: ApplicationRef, modalRef: ModalRefType, component: any) {
+  constructor(
+    appRef: ApplicationRef,
+    modalRef: ModalRefType,
+    component: any,
+    options: ModalOptions = {}
+  ) {
     this.appRef = appRef;
     this.modalRef = modalRef;
     this.component = component;
+    this._options = options;
+  }
+
+  public get instance() {
+    return this.modalRef.instance;
+  }
+
+  public get options() {
+    return this._options;
+  }
+
+  private destroy() {
+    this.result.complete();
+
+    this.appRef.detachView(this.modalRef.hostView);
+    this.modalRef.destroy();
   }
 
   public close(data: T | null = null) {
@@ -26,10 +53,5 @@ export class ModalRef<T = any> {
     this.destroy();
   }
 
-  private destroy() {
-    this.result.complete();
-
-    this.appRef.detachView(this.modalRef.hostView);
-    this.modalRef.destroy();
-  }
+  public setContentRef() {}
 }

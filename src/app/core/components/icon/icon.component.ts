@@ -4,7 +4,7 @@ import { IconName, iconPack } from './iconPack';
 
 @Component({
   selector: 'icon',
-  templateUrl: './icon.component.html',
+  template: '',
   styleUrls: ['./icon.component.sass'],
 })
 export class IconComponent implements OnInit {

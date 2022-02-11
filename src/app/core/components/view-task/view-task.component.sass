@@ -1,0 +1,47 @@
+
+:host
+  header
+    align-items: center
+    display: flex
+    margin-bottom: 16px
+
+    .color
+      background-color: currentColor
+      border-radius: 50%
+      height: 24px
+      margin-inline-end: 1em
+      min-width: 24px
+      position: relative
+      width: 24px
+
+      &::after
+        border: 5px solid white
+        border-radius: inherit
+        content: ''
+        display: block
+        inset: 0
+        opacity: .8
+        pointer-events: none
+        position: absolute
+        transform: scale(1.1)
+
+    input
+      all: unset
+      display: block
+      font-family: inherit
+      font-size: 1.5em
+      font-weight: 600
+      line-height: .9em
+      text-transform: capitalize
+      width: 100%
+
+  .properties
+    th
+      color: #767676
+      font-size: .9em
+      font-weight: 400
+      text-align: left
+
+    td
+      font-weight: 600
+      padding: 4px 16px

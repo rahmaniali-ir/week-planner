@@ -1,13 +1,3 @@
-<div class="modal-body" (click)="preventDefault($event)">
-  <header>
-    <button (click)="dismiss()">X</button>
-  </header>
-
-  <main>
-    <ng-template modalHost></ng-template>
-  </main>
-
-  <footer>
-    <button (click)="close()">Close</button>
-  </footer>
-</div>
+<main (click)="preventDefault($event)">
+  <ng-template modalHost></ng-template>
+</main>

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TaskTimePipe } from './pipes/task-time.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimerInputComponent } from './components/timer-input/timer-input.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
 import { PlanComponent } from './components/plan/plan.component';
@@ -11,6 +11,8 @@ import { IconComponent } from './components/icon/icon.component';
 import { ModalModule } from '../modal/modal.module';
 import { ViewTaskModalComponent } from './components/view-task-modal/view-task-modal.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { ViewTaskComponent } from './components/view-task/view-task.component';
+import { ModalBodyComponent } from './components/modal-body/modal-body.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +25,10 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     IconComponent,
     ViewTaskModalComponent,
     ConfirmModalComponent,
+    ViewTaskComponent,
+    ModalBodyComponent,
   ],
-  imports: [CommonModule, FormsModule, ModalModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalModule],
   exports: [IconComponent, SidebarComponent],
 })
 export class CoreModule {}

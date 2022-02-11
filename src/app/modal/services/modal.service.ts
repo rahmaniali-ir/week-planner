@@ -7,7 +7,7 @@ import {
   Injector,
 } from '@angular/core';
 import { ModalComponent } from '../components/modal/modal.component';
-import { ModalRef } from '../types/modalRef';
+import { ModalRef, ModalOptions } from '../types/modalRef';
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +21,13 @@ export class ModalService {
     private injector: Injector
   ) {}
 
-  public open<T = any>(component: any) {
+  public open<T = any>(component: any, options: ModalOptions = {}) {
     const componentRef = this.appendToView(component);
     componentRef.instance.windowClass = 'test';
 
-    const ref = new ModalRef<T>(this.appRef, componentRef, component);
+    const ref = new ModalRef<T>(this.appRef, componentRef, component, options);
     componentRef.instance.modalRef = ref;
+    componentRef.instance.persistent = !!options.persistent;
 
     this.modals.push(ref);
     return ref;

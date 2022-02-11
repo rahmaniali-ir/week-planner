@@ -20,8 +20,12 @@ import { ModalRef } from '../../types/modalRef';
   encapsulation: ViewEncapsulation.None,
 })
 export class ModalComponent implements OnInit, AfterViewInit {
-  @Input() content: any;
+  @Input() content!: any;
   @Input() modalRef!: ModalRef;
+
+  @HostBinding('attr.persistent')
+  @Input()
+  persistent: boolean = false;
 
   @Input()
   @HostBinding('attr.class')
@@ -30,17 +34,24 @@ export class ModalComponent implements OnInit, AfterViewInit {
   @ViewChild(ModalHostDirective, { static: true })
   ModalHost!: ModalHostDirective;
 
-  constructor(private activeModal: ActiveModal) {}
+  constructor(private injector: Injector) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    this.loadComponent();
+    setTimeout(() => {
+      this.loadComponent();
+    }, 0);
   }
 
   @HostListener('click', ['$event'])
   public onClickOutside(e: MouseEvent) {
-    this.dismiss();
+    if (!this.persistent) this.dismiss();
+  }
+
+  public preventDefault(e: MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   public close() {
@@ -51,16 +62,12 @@ export class ModalComponent implements OnInit, AfterViewInit {
     this.modalRef.dismiss();
   }
 
-  public preventDefault(e: MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
   private loadComponent() {
     const viewContainerRef = this.ModalHost.viewContainerRef;
     viewContainerRef.clear();
 
     const injector = Injector.create({
+      parent: this.injector,
       providers: [
         {
           provide: ActiveModal,
@@ -73,9 +80,14 @@ export class ModalComponent implements OnInit, AfterViewInit {
       ],
     });
 
-    const componentRef = viewContainerRef.createComponent(this.content, {
+    const componentRef = viewContainerRef.createComponent<any>(this.content, {
       injector: injector,
     });
-    // componentRef.instance.data = this.modal.data;
+
+    if (this.modalRef.options.input) {
+      for (let key in this.modalRef.options.input) {
+        componentRef.instance[key] = this.modalRef.options.input[key];
+      }
+    }
   }
 }

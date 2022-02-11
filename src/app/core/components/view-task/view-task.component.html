@@ -1,0 +1,40 @@
+<modal-body>
+  <ng-container header>
+    <button (click)="removeTask()">
+      <icon name="trash"></icon>
+    </button>
+  </ng-container>
+
+  <header>
+    <div class="color" [style.color]="task.color.hsl"></div>
+
+    <input
+      #title
+      type="text"
+      [(ngModel)]="task.title"
+      [placeholder]="placeholder"
+      autofocus
+    />
+  </header>
+
+  <table class="properties">
+    <tr>
+      <th>Weekday</th>
+      <td>{{ task.time.weekday }}</td>
+    </tr>
+
+    <tr>
+      <th>From</th>
+      <td>{{ time.from | taskTime }}</td>
+    </tr>
+
+    <tr>
+      <th>To</th>
+      <td>{{ time.to | taskTime }}</td>
+    </tr>
+  </table>
+
+  <ng-container footer>
+    <button (click)="save()">Save</button>
+  </ng-container>
+</modal-body>
