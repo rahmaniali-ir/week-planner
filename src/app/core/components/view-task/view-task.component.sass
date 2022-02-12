@@ -5,25 +5,8 @@
     display: flex
     margin-bottom: 16px
 
-    .color
-      background-color: currentColor
-      border-radius: 50%
-      height: 24px
+    color-picker
       margin-inline-end: 1em
-      min-width: 24px
-      position: relative
-      width: 24px
-
-      &::after
-        border: 5px solid white
-        border-radius: inherit
-        content: ''
-        display: block
-        inset: 0
-        opacity: .8
-        pointer-events: none
-        position: absolute
-        transform: scale(1.1)
 
     input
       all: unset
@@ -34,6 +17,9 @@
       line-height: .9em
       text-transform: capitalize
       width: 100%
+
+      &::selection
+        background: #ccc
 
   .properties
     th

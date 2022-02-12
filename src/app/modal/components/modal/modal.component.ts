@@ -50,7 +50,6 @@ export class ModalComponent implements OnInit, AfterViewInit {
   }
 
   public preventDefault(e: MouseEvent) {
-    e.preventDefault();
     e.stopPropagation();
   }
 

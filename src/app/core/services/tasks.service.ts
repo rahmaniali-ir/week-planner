@@ -277,9 +277,11 @@ export class TasksService {
   }
 
   public viewTask(task: Task) {
+    const { hue, saturation, lightness } = task.color;
+
     const modal = this.modalService.open<Task>(ViewTaskComponent, {
       input: {
-        task: { ...task },
+        task: { ...task, color: new Color(hue, saturation, lightness) },
       },
     });
 

@@ -13,6 +13,7 @@ import { ViewTaskModalComponent } from './components/view-task-modal/view-task-m
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { ViewTaskComponent } from './components/view-task/view-task.component';
 import { ModalBodyComponent } from './components/modal-body/modal-body.component';
+import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ModalBodyComponent } from './components/modal-body/modal-body.component
     ConfirmModalComponent,
     ViewTaskComponent,
     ModalBodyComponent,
+    ColorPickerComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalModule],
   exports: [IconComponent, SidebarComponent],
