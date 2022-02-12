@@ -31,10 +31,19 @@ export class TasksService {
   private _isChangingTask: boolean = false;
   private _originalChangingTask: Task | null = null;
   private _changingTask: Task | null = null;
+  private altKey = false;
 
   constructor(private modalService: ModalService) {
     window.addEventListener('mouseup', () => {
       this.changingTaskSubject.next(null);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      this.altKey = e.key === 'Alt';
+    });
+
+    window.addEventListener('keyup', () => {
+      this.altKey = false;
     });
 
     this.changingTaskSubject.subscribe((task) => {
