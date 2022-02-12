@@ -1,4 +1,28 @@
+import { knownCSSColors } from './color/knownCSSColors';
 import { Random } from './random';
+
+const colorSystemRegEx = {
+  hsl: /hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)/,
+  hsla: /hsla\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*,\s*(\d|0?\.\d)\s*\)/,
+  rgb: /rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)/,
+  rgba: /rgba\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d|0?\.\d)\s*\)/,
+  hex: /^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/,
+};
+
+type ColorSystem = 'HSL' | 'HSLA' | 'RGB' | 'RGBA' | 'CSS' | 'HEX';
+
+function getColorSystem(color: string): ColorSystem | false {
+  if (!color) return false;
+
+  if (color.match(colorSystemRegEx.hsl)) return 'HSL';
+  if (color.match(colorSystemRegEx.hsla)) return 'HSLA';
+  if (color.match(colorSystemRegEx.rgb)) return 'RGB';
+  if (color.match(colorSystemRegEx.rgba)) return 'RGBA';
+  if (color.match(colorSystemRegEx.hex)) return 'HEX';
+  if (color in knownCSSColors) return 'CSS';
+
+  return false;
+}
 
 export class Color {
   private h: number = 0;
