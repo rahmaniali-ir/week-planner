@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TasksService } from '../../services/tasks.service';
+import { PlanService } from '../../services/plan.service';
 
 @Component({
   selector: 'timeline',
@@ -10,7 +10,7 @@ export class TimelineComponent implements OnInit {
   private planHours = 24;
   public planHoursArray: number[] = [];
 
-  constructor(private tasksService: TasksService) {
+  constructor(private tasksService: PlanService) {
     for (let i = 1; i <= this.planHours; i++) this.planHoursArray.push(i);
   }
 

@@ -1,0 +1,54 @@
+<!-- <table>
+  <thead>
+    <tr>
+      <th></th>
+
+      <th #body>
+        <timeline></timeline>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody [class.changing]="isChanging">
+    <tr *ngFor="let weekday of weekdays">
+      <th>{{ weekday }}</th>
+
+      <td
+        (mousemove)="onMouseMove($event, weekday)"
+        (dblclick)="onDblClick(weekday, $event)"
+      >
+        <task *ngFor="let task of weekdayTasks(weekday)" [task]="task"></task>
+      </td>
+    </tr>
+  </tbody>
+</table> -->
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+
+      <th #body>
+        <timeline></timeline>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let weekday of weekdays">
+      <th>{{ weekday }}</th>
+
+      <td
+        [style.cursor]="cursor"
+        (dblclick)="addTiming(weekday, $event)"
+        (mousemove)="onMouseMove($event)"
+        (mousemove)="moveTimingToWeekday(weekday)"
+      >
+        <plan-timing
+          *ngFor="let timing of getWeekdayTimings(weekday)"
+          [timing]="timing"
+        ></plan-timing>
+      </td>
+    </tr>
+  </tbody>
+</table>
