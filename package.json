@@ -1,6 +1,7 @@
 {
   "name": "week-planner",
   "version": "0.0.0",
+  "homepage": "https://github.com/rahmaniali-ir/week-planner",
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
