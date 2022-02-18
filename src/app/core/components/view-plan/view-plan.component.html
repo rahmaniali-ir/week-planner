@@ -1,24 +1,27 @@
 <modal-body>
   <ng-container header>
-    <button (click)="removeTask()">
+    <!-- <button (click)="removeTask()">
       <icon name="trash"></icon>
-    </button>
+    </button> -->
   </ng-container>
 
   <header>
-    <color-picker [color]="task.color"></color-picker>
+    <color-picker
+      [color]="_color"
+      (colorChange)="colorChanged($event)"
+    ></color-picker>
 
     <input
       #title
       type="text"
-      [(ngModel)]="task.title"
+      [(ngModel)]="_title"
       [placeholder]="placeholder"
       autofocus
     />
   </header>
 
   <table class="properties">
-    <tr>
+    <!-- <tr>
       <th>Weekday</th>
       <td>{{ task.time.weekday }}</td>
     </tr>
@@ -31,7 +34,7 @@
     <tr>
       <th>To</th>
       <td>{{ time.to | taskTime }}</td>
-    </tr>
+    </tr> -->
   </table>
 
   <ng-container footer>

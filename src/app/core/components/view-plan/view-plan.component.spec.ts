@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewTaskComponent } from './view-task.component';
+import { ViewPlanComponent } from './view-plan.component';
 
 describe('ViewTaskComponent', () => {
-  let component: ViewTaskComponent;
-  let fixture: ComponentFixture<ViewTaskComponent>;
+  let component: ViewPlanComponent;
+  let fixture: ComponentFixture<ViewPlanComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ViewTaskComponent ]
-    })
-    .compileComponents();
+      declarations: [ViewPlanComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewTaskComponent);
+    fixture = TestBed.createComponent(ViewPlanComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

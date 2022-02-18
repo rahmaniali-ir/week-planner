@@ -1,15 +1,20 @@
 import { Color } from '../models/color';
 import { Schedule } from '../models/schedule';
 
-export interface Task {
+export interface Topic {
   id: number;
-  color: Color;
   title: string;
-  time: Schedule;
-  subtasks: Subtask[];
+  times: Scheduled[];
+  tasks: Task[];
+  color: Color;
 }
 
-export interface Subtask {
+export interface Scheduled {
+  topic: Topic;
+  time: Schedule;
+}
+
+export interface Task {
   id: number;
   title: string;
   times: number;

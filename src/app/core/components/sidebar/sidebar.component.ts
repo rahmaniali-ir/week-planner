@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Task } from '../../interfaces/task';
-import { TasksService } from '../../services/tasks.service';
+import { PlanService } from '../../services/plan.service';
 
 @Component({
   selector: 'sidebar',
@@ -8,7 +8,7 @@ import { TasksService } from '../../services/tasks.service';
   styleUrls: ['./sidebar.component.sass'],
 })
 export class SidebarComponent implements OnInit {
-  constructor(private tasksService: TasksService) {}
+  constructor(private tasksService: PlanService) {}
 
   ngOnInit(): void {}
 }
