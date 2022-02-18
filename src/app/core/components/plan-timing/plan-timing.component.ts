@@ -5,6 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { Color } from '../../models/color';
 import { PlanService } from '../../services/plan.service';
 import { MovingAnchor } from '../../types/moving';
 import { Timing } from '../../types/plan';
@@ -36,9 +37,17 @@ export class PlanTimingComponent implements OnInit {
     return this.durationToPixel + 'px';
   }
 
-  @HostBinding('style.color')
+  @HostBinding('style.--color')
   get color() {
     return this.timing?.plan.color.hsl || null;
+  }
+
+  @HostBinding('style.--dark-color')
+  get darkColor() {
+    const c = Color.clone(this.timing!.plan.color);
+    c.lightness = 10;
+
+    return c.hsl;
   }
 
   @HostBinding('style.cursor')
@@ -54,6 +63,18 @@ export class PlanTimingComponent implements OnInit {
   @HostBinding('style.pointer-events')
   get pointerEvents() {
     return this.planService.isMovingTiming ? 'none' : null;
+  }
+
+  @HostBinding('attr.hovering')
+  get hovering() {
+    return this.hoveringOn;
+  }
+
+  @HostBinding('attr.moving-anchor')
+  get movingAnchor() {
+    if (this.planService.currentMovingTiming !== this.timing) return null;
+
+    return this.planService.movingBy;
   }
 
   @HostListener('mousemove', ['$event'])
@@ -86,12 +107,20 @@ export class PlanTimingComponent implements OnInit {
     this.planService.viewPlan(this.timing!.plan);
   }
 
+  get hasName() {
+    return !!this.timing?.plan.name;
+  }
+
   get name() {
     if (!this.timing) return '';
 
     if (this.timing.plan.name) return this.timing.plan.name;
 
     return 'Plan ' + this.timing.plan.id;
+  }
+
+  get icon() {
+    return this.timing?.plan.icon;
   }
 
   get durationToPixel() {

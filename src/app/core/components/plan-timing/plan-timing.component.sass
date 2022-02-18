@@ -1,4 +1,6 @@
 :host
+  --color: #343434
+
   display: flex
   padding: 0 2px
   position: absolute
@@ -7,16 +9,41 @@
 
   .timing
     align-items: center
+    animation: translate-x-in .2s ease forwards, opacity-in .3s ease forwards
     background: white
-    border: 2px solid currentColor
+    border: 2px solid var(--color)
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px
     border-radius: 8px
     display: flex
+    opacity: 0
+    padding: 8px 14px
     pointer-events: none
+    position: relative
+    transform: translateX(-4px)
     width: 100%
 
     > *
       pointer-events: none
 
-    header
-      color: #343434
-      padding: 8px
+    .icon
+      display: flex
+      font-size: 1.2em
+      margin-inline-end: 14px
+
+      icon
+        color: var(--color)
+
+    main
+      color: var(--dark-color)
+
+      header
+        font-weight: bold
+        line-height: 1em
+
+        &.placeholder
+          opacity: .5
+
+      time
+        display: block
+        font-size: .8em
+        opacity: .5

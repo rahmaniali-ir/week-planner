@@ -123,6 +123,10 @@ export class PlanService {
     return this.altKey;
   }
 
+  get currentMovingTiming() {
+    return this.movingTiming;
+  }
+
   private getNextPlanId() {
     if (this.plans.length === 0) return 1;
 
@@ -160,7 +164,7 @@ export class PlanService {
     const plan: Plan = {
       id: this.getNextPlanId(),
       name: '',
-      icon: 'circle',
+      icon: 'smile',
       color: Color.random().normalize(),
       timings: [],
       tasks: [],

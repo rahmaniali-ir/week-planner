@@ -1,3 +1,10 @@
 <div class="timing">
-  <header>{{ name }}</header>
+  <div class="icon">
+    <icon [name]="icon"></icon>
+  </div>
+
+  <main>
+    <header [class.placeholder]="!hasName">{{ name }}</header>
+    <time>Plan description</time>
+  </main>
 </div>
