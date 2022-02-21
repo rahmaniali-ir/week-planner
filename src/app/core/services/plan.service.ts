@@ -309,7 +309,11 @@ export class PlanService {
     this.movingTiming.time.weekday = weekday;
   }
 
-  viewPlan(plan: Plan) {
-    this.modalService.open(ViewPlanComponent, { input: { plan } });
+  viewPlan(timing: Timing) {
+    this.modalService.open(ViewPlanComponent, { input: { timing } });
+  }
+
+  removeTiming(timing: Timing) {
+    timing.plan.timings = timing.plan.timings.filter((t) => t !== timing);
   }
 }

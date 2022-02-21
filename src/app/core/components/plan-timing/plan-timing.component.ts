@@ -104,7 +104,7 @@ export class PlanTimingComponent implements OnInit {
   @HostListener('dblclick', ['$event'])
   onDblClick(e: MouseEvent) {
     e.stopPropagation();
-    this.planService.viewPlan(this.timing!.plan);
+    this.planService.viewPlan(this.timing!);
   }
 
   get hasName() {

@@ -4,7 +4,7 @@ import { Task } from '../../interfaces/task';
 import { Color } from '../../models/color';
 import { Schedule } from '../../models/schedule';
 import { PlanService } from '../../services/plan.service';
-import { Plan } from '../../types/plan';
+import { Plan, Timing } from '../../types/plan';
 import { capitalize } from '../../utils';
 
 @Component({
@@ -13,11 +13,14 @@ import { capitalize } from '../../utils';
   styleUrls: ['./view-plan.component.sass'],
 })
 export class ViewPlanComponent implements OnInit {
-  @Input() plan: Plan | null = null;
+  @Input() timing: Timing | null = null;
   _title = '';
   _color: Color | null = null;
 
-  constructor(private activeModal: ActiveModal) {}
+  constructor(
+    private activeModal: ActiveModal,
+    private planService: PlanService
+  ) {}
 
   ngOnInit(): void {
     this._title = this.plan?.name || '';
@@ -26,6 +29,10 @@ export class ViewPlanComponent implements OnInit {
       this._color = new Color();
       this._color.hsl = this.plan.color.hsl;
     }
+  }
+
+  get plan() {
+    return this.timing?.plan;
   }
 
   get placeholder() {
@@ -47,6 +54,11 @@ export class ViewPlanComponent implements OnInit {
 
     if (this._color) this.plan.color = this._color;
 
+    this.activeModal.close();
+  }
+
+  removeTiming() {
+    this.planService.removeTiming(this.timing!);
     this.activeModal.close();
   }
 }
