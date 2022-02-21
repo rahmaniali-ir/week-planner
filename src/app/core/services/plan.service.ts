@@ -99,6 +99,18 @@ export class PlanService {
     window.addEventListener('keyup', (e) => {
       this.altKey = false;
     });
+
+    window.addEventListener('beforeunload', () => {
+      this.saveToLocalStorage();
+    });
+
+    window.addEventListener('blur', () => {
+      this.saveToLocalStorage();
+    });
+
+    setTimeout(() => {
+      this.loadFromLocalStorage();
+    }, 0);
   }
 
   private get movingTimingOffsetBlock() {
@@ -137,6 +149,73 @@ export class PlanService {
     if (plan.timings.length === 0) return 0;
 
     return plan.timings[plan.timings.length - 1].id + 1;
+  }
+
+  private saveToLocalStorage() {
+    const plans: any[] = [];
+
+    this.plans.forEach((plan) => {
+      const { id, color, name, timings, icon, tasks } = plan;
+
+      const cleanTimings: any[] = [];
+
+      timings.forEach((timing) => {
+        cleanTimings.push({
+          id: timing.id,
+          time: { ...timing.time },
+        });
+      });
+
+      plans.push({
+        id,
+        name,
+        color: color.hsl,
+        timings: cleanTimings,
+        icon,
+        tasks,
+      });
+    });
+
+    localStorage.setItem('plans', JSON.stringify(plans));
+  }
+
+  private loadFromLocalStorage() {
+    const localStoragePlans = localStorage.getItem('plans');
+
+    if (!localStoragePlans) return;
+
+    const storedPlans = JSON.parse(localStoragePlans) as Plan[];
+
+    const plans: Plan[] = [];
+
+    storedPlans.forEach((storedPlan) => {
+      const { id, name, timings: storedTimings, icon, tasks } = storedPlan;
+
+      const color = new Color();
+      color.hsl = storedPlan.color;
+      storedPlan.color = color;
+
+      const plan: Plan = {
+        id,
+        name,
+        timings: [],
+        color,
+        icon,
+        tasks,
+      };
+
+      const timings: Timing[] = storedTimings.map((t) => {
+        return {
+          id: t.id,
+          plan: plan,
+          time: new TimeBlock(t.time.weekday, t.time.from, t.time.to),
+        };
+      });
+
+      plan.timings = timings;
+
+      this.plans.push(plan);
+    });
   }
 
   getWeekdayTimings(weekday: Weekday) {
