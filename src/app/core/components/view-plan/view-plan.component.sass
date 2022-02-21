@@ -1,5 +1,8 @@
 
 :host
+  --color: currentColor
+  --dark-color: currentColor
+
   header
     align-items: center
     display: flex
@@ -21,7 +24,13 @@
       &::selection
         background: #ccc
 
-  .properties
+  section
+    padding: 8px 0
+
+    + section
+      border-top: 1px solid #eee
+
+  table
     th
       color: #767676
       font-size: .9em
@@ -31,3 +40,17 @@
     td
       font-weight: 600
       padding: 4px 16px
+
+  tr.current-timing
+    th, td
+      color: var(--dark-color)
+
+  .timing-duration
+    font-size: .8em
+    opacity: .6
+
+    &::before
+      content: '('
+
+    &::after
+      content: ')'

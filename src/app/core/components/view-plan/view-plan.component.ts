@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActiveModal } from 'src/app/modal/services/active-modal.service';
 import { Task } from '../../interfaces/task';
 import { Color } from '../../models/color';
@@ -38,16 +45,43 @@ export class ViewPlanComponent implements OnInit {
     }, 0);
   }
 
+  @HostBinding('style.--color')
+  get color() {
+    return this.plan.color.hsl;
+  }
+
+  @HostBinding('style.--dark-color')
+  get colorDark() {
+    const color = Color.clone(this.plan.color);
+    color.lightness = 40;
+
+    return color.hsl;
+  }
+
+  get blockDuration() {
+    return this.planService.eachHourBlockDuration;
+  }
+
   get plan() {
-    return this.timing?.plan;
+    return this.timing!.plan;
+  }
+
+  get planTimings() {
+    return this.plan.timings;
+  }
+
+  get weeklyTiming() {
+    let weekly = 0;
+
+    this.planTimings.forEach((t) => {
+      weekly += t.time.duration;
+    });
+
+    return weekly;
   }
 
   get placeholder() {
     return 'Plan ' + this.plan?.id;
-  }
-
-  get color() {
-    return this.plan?.color;
   }
 
   colorChanged(color: Color) {

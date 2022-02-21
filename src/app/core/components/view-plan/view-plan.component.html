@@ -23,22 +23,34 @@
     />
   </header>
 
-  <table class="properties">
-    <!-- <tr>
-      <th>Weekday</th>
-      <td>{{ task.time.weekday }}</td>
-    </tr>
+  <section>
+    <table class="properties">
+      <tr>
+        <th>Weekly</th>
+        <td>{{ weeklyTiming * blockDuration | taskTime }}</td>
+      </tr>
+    </table>
+  </section>
 
-    <tr>
-      <th>From</th>
-      <td>{{ time.from | taskTime }}</td>
-    </tr>
+  <section>
+    <table class="timings">
+      <tr
+        *ngFor="let planTiming of planTimings"
+        [class.current-timing]="planTiming === timing"
+      >
+        <th>{{ planTiming.time.weekday }}</th>
 
-    <tr>
-      <th>To</th>
-      <td>{{ time.to | taskTime }}</td>
-    </tr> -->
-  </table>
+        <td>
+          {{ planTiming.time.from * blockDuration | taskTime }} -
+          {{ planTiming.time.to * blockDuration | taskTime }}
+
+          <span class="timing-duration">
+            {{ planTiming.time.duration * blockDuration | taskTime }}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </section>
 
   <ng-container footer>
     <button (click)="save()">Save</button>
