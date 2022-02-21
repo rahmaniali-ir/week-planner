@@ -18,6 +18,7 @@
       type="text"
       [(ngModel)]="_title"
       [placeholder]="placeholder"
+      (keyup.enter)="save()"
       autofocus
     />
   </header>
