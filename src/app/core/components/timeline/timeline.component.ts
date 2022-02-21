@@ -10,9 +10,17 @@ export class TimelineComponent implements OnInit {
   private planHours = 24;
   public planHoursArray: number[] = [];
 
-  constructor(private tasksService: PlanService) {
+  constructor(private planService: PlanService) {
     for (let i = 1; i <= this.planHours; i++) this.planHoursArray.push(i);
   }
 
   ngOnInit(): void {}
+
+  get showCaret() {
+    return true;
+  }
+
+  get caretOffset() {
+    return this.planService.movingTimingOffset + 'px';
+  }
 }

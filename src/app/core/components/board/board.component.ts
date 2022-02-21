@@ -55,6 +55,7 @@ export class BoardComponent implements OnInit {
   onMouseMove(e: MouseEvent) {
     if (this.planService.isMovingTiming)
       this.planService.movingTimingOffset$.next(e.offsetX);
+    else this.planService.movingTimingOffset = e.offsetX;
   }
 
   moveTimingToWeekday(weekday: Weekday) {
