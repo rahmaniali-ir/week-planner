@@ -179,6 +179,8 @@ export class PlanService {
 
     plan.timings.push(timing);
     this.plans.push(plan);
+
+    this.viewPlan(timing);
   }
 
   moveTimingBeginning() {
