@@ -18,7 +18,9 @@ import { Plan, Timing } from '../types/plan';
   providedIn: 'root',
 })
 export class PlanService {
-  numberOfTimeBlocks = 24 * 4; // 15 minutes
+  hourBlockDivider = 4; // 15 minutes
+  eachHourBlockDuration = 60 / this.hourBlockDivider;
+  numberOfTimeBlocks = 24 * this.hourBlockDivider;
   newTimingDuration = 16; // 4 hours
   minTimingDuration = 1; // 15 minutes
   PBC = new PixelBlockConverter(this.numberOfTimeBlocks);

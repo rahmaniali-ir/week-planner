@@ -6,6 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Color } from '../../models/color';
+import { TaskTimePipe } from '../../pipes/task-time.pipe';
 import { PlanService } from '../../services/plan.service';
 import { MovingAnchor } from '../../types/moving';
 import { Timing } from '../../types/plan';
@@ -21,9 +22,27 @@ export class PlanTimingComponent implements OnInit {
   private resizeEdgeSpace = 8;
   hoveringOn: MovingAnchor = 'none';
 
-  constructor(private planService: PlanService) {}
+  constructor(
+    private planService: PlanService,
+    private taskTime: TaskTimePipe
+  ) {}
 
   ngOnInit(): void {}
+
+  @HostBinding('attr.title')
+  get title() {
+    const from = this.taskTime.transform(
+      this.timing!.time.from * this.planService.eachHourBlockDuration
+    );
+    const to = this.taskTime.transform(
+      this.timing!.time.to * this.planService.eachHourBlockDuration
+    );
+    const duration = this.taskTime.transform(
+      this.timing!.time.duration * this.planService.eachHourBlockDuration
+    );
+
+    return `from: ${from}\nto: ${to}\nduration: ${duration}`;
+  }
 
   @HostBinding('style.left')
   get left() {

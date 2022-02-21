@@ -36,5 +36,6 @@ import { IconPickerComponent } from './components/icon-picker/icon-picker.compon
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalModule],
   exports: [IconComponent, SidebarComponent],
+  providers: [TaskTimePipe],
 })
 export class CoreModule {}
