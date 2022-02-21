@@ -14,6 +14,9 @@ import { capitalize } from '../../utils';
 })
 export class ViewPlanComponent implements OnInit {
   @Input() timing: Timing | null = null;
+
+  @ViewChild('title') titleInput!: ElementRef<HTMLInputElement>;
+
   _title = '';
   _color: Color | null = null;
 
@@ -29,6 +32,10 @@ export class ViewPlanComponent implements OnInit {
       this._color = new Color();
       this._color.hsl = this.plan.color.hsl;
     }
+
+    setTimeout(() => {
+      this.titleInput.nativeElement.focus();
+    }, 0);
   }
 
   get plan() {
