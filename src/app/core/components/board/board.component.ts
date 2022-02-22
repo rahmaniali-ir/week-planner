@@ -1,4 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { PlanService } from '../../services/plan.service';
 import { Weekday } from '../../types/weekday';
 
@@ -9,6 +16,7 @@ import { Weekday } from '../../types/weekday';
 })
 export class BoardComponent implements OnInit {
   @ViewChild('body') body!: ElementRef<HTMLElement>;
+  @ViewChildren('boardRow') boardRows!: QueryList<ElementRef<HTMLElement>>;
   public weekdays: Weekday[] = [
     'Saturday',
     'Sunday',
@@ -24,6 +32,18 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.planService.PBC.setElement(this.body.nativeElement);
+
+      this.boardRows.forEach((boardRow) => {
+        boardRow.nativeElement.addEventListener(
+          'mousemove',
+          (e) => {
+            this.onMouseMove(e);
+          },
+          {
+            capture: true,
+          }
+        );
+      });
     }, 0);
   }
 
@@ -53,9 +73,13 @@ export class BoardComponent implements OnInit {
   }
 
   onMouseMove(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    const x = e.offsetX;
+    const offsetX = target.tagName === 'TD' ? x : target.offsetLeft + x;
+
     if (this.planService.isMovingTiming)
-      this.planService.movingTimingOffset$.next(e.offsetX);
-    else this.planService.movingTimingOffset = e.offsetX;
+      this.planService.movingTimingOffset$.next(offsetX);
+    else this.planService.movingTimingOffset = offsetX;
   }
 
   moveTimingToWeekday(weekday: Weekday) {

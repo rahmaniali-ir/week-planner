@@ -39,9 +39,9 @@
       <th>{{ weekday }}</th>
 
       <td
+        #boardRow
         [style.cursor]="cursor"
         (dblclick)="addTiming(weekday, $event)"
-        (mousemove)="onMouseMove($event)"
         (mousemove)="moveTimingToWeekday(weekday)"
       >
         <plan-timing
