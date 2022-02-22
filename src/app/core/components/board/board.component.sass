@@ -16,6 +16,18 @@
             cursor: ew-resize
 
       tr
+        &.current-weekday
+          th
+            color: var(--primary)
+            font-weight: bold
+
+          td
+            background: var(--background)
+            border-top-color: var(--border-color-darker) !important
+          
+          + tr td
+            border-top-color: var(--border-color-darker) !important
+
         th
           font-size: 16px
           font-weight: normal
@@ -27,6 +39,7 @@
         
         &:hover th
           font-weight: bold
+          letter-spacing: 1px
 
         td
           background: var(--background-accent)

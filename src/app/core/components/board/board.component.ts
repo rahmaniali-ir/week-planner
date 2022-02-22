@@ -25,13 +25,24 @@ export class BoardComponent implements OnInit {
     'Thursday',
     'Friday',
   ];
+  date: Date;
 
-  constructor(private planService: PlanService) {}
+  constructor(private planService: PlanService) {
+    this.date = new Date();
+  }
 
   ngOnInit(): void {
     setTimeout(() => {
       this.planService.PBC.setElement(this.body.nativeElement);
     }, 0);
+  }
+
+  get currentWeekday() {
+    let index = this.date.getDay() + 1;
+
+    if (index === 6) index = 0;
+
+    return this.weekdays[index];
   }
 
   get allPlansTimings() {

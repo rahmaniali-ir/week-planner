@@ -35,7 +35,10 @@
   </thead>
 
   <tbody>
-    <tr *ngFor="let weekday of weekdays">
+    <tr
+      *ngFor="let weekday of weekdays"
+      [class.current-weekday]="weekday === currentWeekday"
+    >
       <th>{{ weekday }}</th>
 
       <td
