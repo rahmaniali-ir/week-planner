@@ -16,7 +16,6 @@ import { Weekday } from '../../types/weekday';
 })
 export class BoardComponent implements OnInit {
   @ViewChild('body') body!: ElementRef<HTMLElement>;
-  @ViewChildren('boardRow') boardRows!: QueryList<ElementRef<HTMLElement>>;
   public weekdays: Weekday[] = [
     'Saturday',
     'Sunday',
@@ -32,18 +31,6 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.planService.PBC.setElement(this.body.nativeElement);
-
-      this.boardRows.forEach((boardRow) => {
-        boardRow.nativeElement.addEventListener(
-          'mousemove',
-          (e) => {
-            this.onMouseMove(e);
-          },
-          {
-            capture: true,
-          }
-        );
-      });
     }, 0);
   }
 
