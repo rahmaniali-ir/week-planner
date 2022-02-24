@@ -245,7 +245,7 @@ export class PlanService {
     const plan: Plan = {
       id: this.getNextPlanId(),
       name: '',
-      icon: 'smile',
+      icon: 'user',
       color: Color.random().normalize(),
       timings: [],
       tasks: [],
