@@ -8,6 +8,6 @@ import { Component, HostBinding } from '@angular/core';
 export class AppComponent {
   @HostBinding('style.background-image')
   get backgroundImage() {
-    return 'url(/assets/backgrounds/background-14.jpg)';
+    return 'url(/assets/backgrounds/background-9.jpg)';
   }
 }
