@@ -2,67 +2,58 @@
 :host
   display: block
 
-  table
-    border-spacing: 0
+  .board
     width: 100%
 
-    thead tr th
+    .row
+      display: flex
+
+      > header
+        width: 120px
+
+      > main
+        flex: 1
+        position: relative
+
+    > header .row.timeline
       padding-bottom: 16px
 
-    tbody
-      &.changing
-        tr
-          td
-            cursor: ew-resize
+    > main
+      background: rgba(var(--theme), .7)
+      backdrop-filter: blur(12px)
+      border-radius: var(--radius)
 
-      tr
-        &.current-weekday
-          th
-            color: var(--primary)
-            font-weight: bold
+      .row
+        &:hover
+          background: rgba(var(--theme), .1)
 
-          td
-            background: var(--background)
-            border-top-color: var(--border-color-darker) !important
-          
-          + tr td
-            border-top-color: var(--border-color-darker) !important
+        &:first-child
+          border-radius: var(--radius) var(--radius) 0 0
 
-        th
+        &:last-child
+          border-radius: 0 0 var(--radius) var(--radius)
+
+        &.today
+          color: var(--primary)
+          font-weight: bold
+          background: rgba(var(--theme), .3)
+
+          &:hover
+            background: rgba(var(--theme), .4)
+
+        > header
           font-size: 16px
           font-weight: normal
           line-height: 1em
-          padding: 32px 0
+          padding: 32px
           text-align: left
           transition: all .3s ease
-          width: 120px
-        
-        &:hover th
-          font-weight: bold
-          letter-spacing: 1px
 
-        td
-          background: var(--background-accent)
-          position: relative
-
+        > main
           task
             position: absolute
             top: 50%
             transform: translateY(-50%)
 
-        &:first-child
-          td:first-of-type
-            border-top-left-radius: var(--radius)
-
-          td:last-of-type
-            border-top-right-radius: var(--radius)
-
-        &:last-child
-          td:first-of-type
-            border-bottom-left-radius: var(--radius)
-
-          td:last-of-type
-            border-bottom-right-radius: var(--radius)
-
-        + tr td
-          border-top: solid 1px var(--border-color)
+        + .row
+          border-top: solid 1px rgba(var(--theme), .2)

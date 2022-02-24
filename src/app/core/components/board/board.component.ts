@@ -73,7 +73,8 @@ export class BoardComponent implements OnInit {
   onMouseMove(e: MouseEvent) {
     const target = e.target as HTMLElement;
     const x = e.offsetX;
-    const offsetX = target.tagName === 'TD' ? x : target.offsetLeft + x;
+    const offsetX =
+      target.tagName !== 'PLAN-TIMING' ? x : target.offsetLeft + x;
 
     if (this.planService.isMovingTiming)
       this.planService.movingTimingOffset$.next(offsetX);
