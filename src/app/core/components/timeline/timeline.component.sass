@@ -44,6 +44,12 @@
       &:nth-child(even)
         background: rgba(var(--theme), .3)
 
+      &:first-of-type
+        border-radius: var(--radius) 0 0 var(--radius)
+
+      &:last-of-type
+        border-radius: 0 var(--radius) var(--radius) 0
+
       &.hovered-on
         color: var(--primary)
 
@@ -85,9 +91,3 @@
 
       &.at-end
         transform: translateX(-75%) translateY(75%) rotate(90deg)
-
-      span
-        left: 0
-        position: absolute
-        bottom: 101%
-        transform: translateX(-50%)
