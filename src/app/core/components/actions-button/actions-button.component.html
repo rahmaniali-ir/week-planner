@@ -1,0 +1,14 @@
+<button class="small" (click)="toggleOpen()">
+  <icon name="more"></icon>
+</button>
+
+<ul *ngIf="!isEmpty && open" class="list">
+  <li
+    *ngFor="let action of actions"
+    (click)="selectAction(action)"
+    [class]="action.customClass"
+  >
+    <icon *ngIf="action.icon" [name]="action.icon"></icon>
+    <span>{{ action.title }}</span>
+  </li>
+</ul>
