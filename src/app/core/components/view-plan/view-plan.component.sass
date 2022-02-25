@@ -1,7 +1,9 @@
 
 :host
-  --color: currentColor
   --dark-color: currentColor
+
+  color: var(--color)
+  display: block
 
   header
     align-items: center
@@ -28,11 +30,11 @@
     padding: 8px 0
 
     + section
-      border-top: 1px solid #eee
+      border-top: 1px solid rgba(var(--theme-opposite), .1)
 
   table
     th
-      color: #767676
+      color: var(--color)
       font-size: .9em
       font-weight: 400
       text-align: left
@@ -43,7 +45,7 @@
 
   tr.current-timing
     th, td
-      color: var(--dark-color)
+      color: var(--plan-color)
 
   .timing-duration
     font-size: .8em

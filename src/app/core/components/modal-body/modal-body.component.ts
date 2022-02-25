@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActiveModal } from 'src/app/modal/services/active-modal.service';
 import { IconName } from '../icon/iconPack';
 
@@ -6,6 +6,7 @@ import { IconName } from '../icon/iconPack';
   selector: 'modal-body',
   templateUrl: './modal-body.component.html',
   styleUrls: ['./modal-body.component.sass'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ModalBodyComponent implements OnInit {
   @Input() header: string = '';

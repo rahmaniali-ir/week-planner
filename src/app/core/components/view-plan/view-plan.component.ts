@@ -15,7 +15,7 @@ import { Plan, Timing } from '../../types/plan';
 import { capitalize } from '../../utils';
 
 @Component({
-  selector: 'view-task',
+  selector: 'view-plan',
   templateUrl: './view-plan.component.html',
   styleUrls: ['./view-plan.component.sass'],
 })
@@ -45,7 +45,7 @@ export class ViewPlanComponent implements OnInit {
     }, 0);
   }
 
-  @HostBinding('style.--color')
+  @HostBinding('style.--plan-color')
   get color() {
     return this.plan.color.hsl;
   }

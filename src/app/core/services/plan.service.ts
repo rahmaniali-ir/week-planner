@@ -112,6 +112,10 @@ export class PlanService {
 
     setTimeout(() => {
       this.loadFromLocalStorage();
+
+      // setTimeout(() => {
+      //   this.viewPlan(this.plans[0].timings[0]);
+      // }, 100);
     }, 0);
   }
 
