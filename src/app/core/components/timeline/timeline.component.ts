@@ -16,11 +16,35 @@ export class TimelineComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  private get caretBlockOffset() {
+    return this.planService.PBC.pixelToPerfectBlock(
+      this.planService.movingTimingOffset
+    );
+  }
+
+  get isCaretAtBeginning() {
+    return this.caretBlockOffset === 0;
+  }
+
+  get isCaretAtEnd() {
+    return this.caretBlockOffset === this.planService.numberOfTimeBlocks;
+  }
+
   get showCaret() {
     return true;
   }
 
   get caretOffset() {
-    return this.planService.movingTimingOffset + 'px';
+    return this.planService.PBC.blockToPixel(this.caretBlockOffset) + 'px';
+  }
+
+  get hoveredTime() {
+    return this.caretBlockOffset * this.planService.eachHourBlockDuration;
+  }
+
+  get hoveredHour() {
+    return Math.floor(
+      this.caretBlockOffset / this.planService.hourBlockDivider
+    );
   }
 }

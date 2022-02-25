@@ -1,13 +1,23 @@
 <nav>
-  <div class="hovered-time">
-    <span>{{ 0 | taskTime }}</span>
+  <div class="hovered-time" [style.left]="caretOffset">
+    <span>{{ hoveredTime | taskTime }}</span>
   </div>
 </nav>
 
 <main>
-  <div *ngFor="let chunk of planHoursArray" class="chunk">
-    <span>{{ chunk }}</span>
+  <div
+    *ngFor="let hour of planHoursArray"
+    class="hour"
+    [class.hovered-on]="hour === hoveredHour"
+  >
+    <span>{{ hour }}</span>
   </div>
 
-  <div class="caret" [style.left]="caretOffset" [class.show]="showCaret"></div>
+  <span
+    class="caret"
+    [style.left]="caretOffset"
+    [class.show]="showCaret"
+    [class.at-beginning]="isCaretAtBeginning"
+    [class.at-end]="isCaretAtEnd"
+  ></span>
 </main>

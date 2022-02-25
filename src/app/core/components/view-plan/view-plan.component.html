@@ -1,8 +1,9 @@
 <modal-body>
   <ng-container header>
-    <button (click)="removeTiming()">
-      <icon name="trash"></icon>
-    </button>
+    <actions-button
+      [actions]="actions"
+      (onSelect)="onAction($event)"
+    ></actions-button>
   </ng-container>
 
   <header>
@@ -53,6 +54,14 @@
   </section>
 
   <ng-container footer>
-    <button (click)="save()">Save</button>
+    <button class="hover-warning-color-icon" (click)="dismiss()">
+      <icon name="times"></icon>
+      <span>Discard</span>
+    </button>
+
+    <button class="hover-success-color-icon" (click)="save()">
+      <icon name="check"></icon>
+      <span>Save</span>
+    </button>
   </ng-container>
 </modal-body>

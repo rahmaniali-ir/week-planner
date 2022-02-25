@@ -40,7 +40,7 @@ export class BoardComponent implements OnInit {
   get currentWeekday() {
     let index = this.date.getDay() + 1;
 
-    if (index === 6) index = 0;
+    if (index === 7) index = 0;
 
     return this.weekdays[index];
   }
@@ -73,7 +73,8 @@ export class BoardComponent implements OnInit {
   onMouseMove(e: MouseEvent) {
     const target = e.target as HTMLElement;
     const x = e.offsetX;
-    const offsetX = target.tagName === 'TD' ? x : target.offsetLeft + x;
+    const offsetX =
+      target.tagName !== 'PLAN-TIMING' ? x : target.offsetLeft + x;
 
     if (this.planService.isMovingTiming)
       this.planService.movingTimingOffset$.next(offsetX);

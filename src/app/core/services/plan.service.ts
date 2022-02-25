@@ -26,6 +26,7 @@ export class PlanService {
   PBC = new PixelBlockConverter(this.numberOfTimeBlocks);
   plans: Plan[] = [];
 
+  // moving feature
   private originalMovingTiming: Timing | null = null;
   private movingTiming: Timing | null = null;
   private referenceTiming: Timing | null = null;
@@ -36,6 +37,8 @@ export class PlanService {
   movingTimingOffset$: Subject<number> = new Subject();
   private altKey = false;
   private makingNewReference = false;
+
+  click$ = new Subject<MouseEvent>();
 
   constructor(private modalService: ModalService) {
     this.movingTiming$.subscribe((timing) => {
@@ -102,6 +105,10 @@ export class PlanService {
       this.altKey = false;
     });
 
+    window.addEventListener('click', (e) => {
+      this.click$.next(e);
+    });
+
     window.addEventListener('beforeunload', () => {
       this.saveToLocalStorage();
     });
@@ -112,6 +119,10 @@ export class PlanService {
 
     setTimeout(() => {
       this.loadFromLocalStorage();
+
+      // setTimeout(() => {
+      //   this.viewPlan(this.plans[0].timings[0]);
+      // }, 100);
     }, 0);
   }
 
@@ -245,7 +256,7 @@ export class PlanService {
     const plan: Plan = {
       id: this.getNextPlanId(),
       name: '',
-      icon: 'smile',
+      icon: 'user',
       color: Color.random().normalize(),
       timings: [],
       tasks: [],
@@ -393,10 +404,16 @@ export class PlanService {
   }
 
   viewPlan(timing: Timing) {
-    this.modalService.open(ViewPlanComponent, { input: { timing } });
+    this.modalService.open(ViewPlanComponent, {
+      input: { timing },
+    });
   }
 
   removeTiming(timing: Timing) {
     timing.plan.timings = timing.plan.timings.filter((t) => t !== timing);
+  }
+
+  removePlan(plan: Plan) {
+    this.plans = this.plans.filter((p) => p !== plan);
   }
 }

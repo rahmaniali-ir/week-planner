@@ -1,35 +1,51 @@
 
-:host
-  border-radius: 12px
+modal-body
+  animation: translate-y-in .3s ease forwards, opacity-in .3s ease forwards
+  backdrop-filter: blur(calc(var(--blur) / 2))
+  background: linear-gradient(to top right, rgba(var(--theme-opposite), .05), rgba(var(--theme), .2))
+  border-radius: var(--radius)
+  box-shadow: 0 8px 32px rgba(var(--theme), .1)
+  color: var(--color)
   display: block
   min-width: 500px
+  opacity: 0
+  padding: 8px
   position: relative
+  transform: translateY(8px)
 
-  header,
-  main,
-  footer
-    background: white
+  &::after
+    border: 1px solid rgba(var(--theme-opposite), .05)
+    border-radius: inherit
+    content: ''
+    display: block
+    inset: 2px
+    mask-image: linear-gradient(to top right, #fff 50%, #fff1)
+    pointer-events: none
+    position: absolute
+
+  > main,
+  > footer
     padding: 16px 24px
 
-  header
+  > header
     align-items: center
-    border-radius: 12px 12px 0 0
+    border-radius: var(--radius) var(--radius) 0 0
     display: flex
-    padding: 8px
+    padding: 0
+    margin-bottom: 16px
 
     .dismiss
       margin-left: auto
 
-  main
+  > main
     padding-top: 0
 
-  footer
+  > footer
     align-items: center
-    background: #f8f8f8
-    border-radius: 0 0 12px 12px
-    border-top: 1px solid #f0f0f0
+    border-radius: 0 0 var(--radius) var(--radius)
+    border-top: 1px solid rgba(var(--theme-opposite), .1)
     display: flex
     justify-content: center
 
   button
-    padding: 0
+    color: currentColor

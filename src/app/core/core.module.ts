@@ -16,6 +16,7 @@ import { ModalBodyComponent } from './components/modal-body/modal-body.component
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { PlanTimingComponent } from './components/plan-timing/plan-timing.component';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
+import { ActionsButtonComponent } from './components/actions-button/actions-button.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { IconPickerComponent } from './components/icon-picker/icon-picker.compon
     ColorPickerComponent,
     PlanTimingComponent,
     IconPickerComponent,
+    ActionsButtonComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalModule],
   exports: [IconComponent, SidebarComponent],

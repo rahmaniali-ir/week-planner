@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActiveModal } from 'src/app/modal/services/active-modal.service';
 import { IconName } from '../icon/iconPack';
 
@@ -6,6 +6,7 @@ import { IconName } from '../icon/iconPack';
   selector: 'modal-body',
   templateUrl: './modal-body.component.html',
   styleUrls: ['./modal-body.component.sass'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ModalBodyComponent implements OnInit {
   @Input() header: string = '';
@@ -14,6 +15,10 @@ export class ModalBodyComponent implements OnInit {
   constructor(private activeModal: ActiveModal) {}
 
   ngOnInit(): void {}
+
+  get isPersistent() {
+    return !!this.activeModal.modalRef!.options.persistent;
+  }
 
   public dismiss() {
     this.activeModal.dismiss();

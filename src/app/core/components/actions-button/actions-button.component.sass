@@ -1,0 +1,46 @@
+
+@keyframes actions-button-menu-in
+  0%
+    clip-path: circle(0% at 80% 20%)
+    opacity: 0
+    transform: translateY(-4px)
+
+  100%
+    opacity: 1
+    clip-path: circle(150% at 80% 20%)
+    transform: translateY(0)
+
+actions-button
+  position: relative
+
+  > button.small
+    font-size: 24px
+    padding: 2px
+
+  ul.list
+    animation: actions-button-menu-in .3s ease forwards
+    box-shadow: var(--shadow)
+    position: absolute
+    right: 0
+    top: 100%
+    z-index: 2
+
+    li
+      border-radius: var(--radius)
+      cursor: pointer
+      padding: 6px 10px
+      transition: all .3s ease, transform 0s
+      white-space: nowrap
+
+      &:hover
+        background: rgba(var(--theme-opposite), .1)
+        box-shadow: var(--inside-shadow)
+
+      &:active
+        transform: scale(.95)
+
+      icon, span
+        transition: all .3s ease
+
+      icon
+        margin-inline-end: 8px

@@ -56,7 +56,7 @@ export class PlanTimingComponent implements OnInit {
     return this.durationToPixel + 'px';
   }
 
-  @HostBinding('style.--color')
+  @HostBinding('style.--plan-color')
   get color() {
     return this.timing?.plan.color.hsl || null;
   }
