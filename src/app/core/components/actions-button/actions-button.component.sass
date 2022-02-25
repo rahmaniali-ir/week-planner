@@ -15,7 +15,7 @@ actions-button
 
   > button.small
     font-size: 24px
-    padding: 0
+    padding: 2px
 
   ul.list
     animation: actions-button-menu-in .3s ease forwards
@@ -38,6 +38,9 @@ actions-button
 
       &:active
         transform: scale(.95)
+
+      icon, span
+        transition: all .3s ease
 
       icon
         margin-inline-end: 8px

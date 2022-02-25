@@ -397,10 +397,16 @@ export class PlanService {
   }
 
   viewPlan(timing: Timing) {
-    this.modalService.open(ViewPlanComponent, { input: { timing } });
+    this.modalService.open(ViewPlanComponent, {
+      input: { timing },
+    });
   }
 
   removeTiming(timing: Timing) {
     timing.plan.timings = timing.plan.timings.filter((t) => t !== timing);
+  }
+
+  removePlan(plan: Plan) {
+    this.plans = this.plans.filter((p) => p !== plan);
   }
 }

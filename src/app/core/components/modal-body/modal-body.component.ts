@@ -16,6 +16,10 @@ export class ModalBodyComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  get isPersistent() {
+    return !!this.activeModal.modalRef!.options.persistent;
+  }
+
   public dismiss() {
     this.activeModal.dismiss();
   }

@@ -13,6 +13,9 @@ import { Schedule } from '../../models/schedule';
 import { PlanService } from '../../services/plan.service';
 import { Plan, Timing } from '../../types/plan';
 import { capitalize } from '../../utils';
+import { ActionsButtonItem } from '../actions-button/action-button-item';
+
+type ActionType = 'removeTiming' | 'removePlan';
 
 @Component({
   selector: 'view-plan',
@@ -23,6 +26,21 @@ export class ViewPlanComponent implements OnInit {
   @Input() timing: Timing | null = null;
 
   @ViewChild('title') titleInput!: ElementRef<HTMLInputElement>;
+
+  actions: ActionsButtonItem<ActionType>[] = [
+    {
+      title: 'Remove This timing',
+      value: 'removeTiming',
+      icon: 'trash',
+      customClass: 'hover-warning-color-icon',
+    },
+    {
+      title: 'Remove Plan',
+      value: 'removePlan',
+      icon: 'trash',
+      customClass: 'danger-color-icon hover-danger-color-text',
+    },
+  ];
 
   _title = '';
   _color: Color | null = null;
@@ -88,6 +106,10 @@ export class ViewPlanComponent implements OnInit {
     this._color = color;
   }
 
+  dismiss() {
+    this.activeModal.dismiss();
+  }
+
   save() {
     if (!this.plan) return;
 
@@ -101,5 +123,20 @@ export class ViewPlanComponent implements OnInit {
   removeTiming() {
     this.planService.removeTiming(this.timing!);
     this.activeModal.close();
+  }
+
+  removePlan() {
+    this.planService.removePlan(this.timing!.plan);
+    this.activeModal.close();
+  }
+
+  onAction(action: ActionsButtonItem<ActionType>) {
+    switch (action.value) {
+      case 'removeTiming':
+        return this.removeTiming();
+
+      case 'removePlan':
+        return this.removePlan();
+    }
   }
 }
