@@ -1,4 +1,5 @@
 import { Component, HostBinding } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,6 @@ import { Component, HostBinding } from '@angular/core';
 export class AppComponent {
   @HostBinding('style.background-image')
   get backgroundImage() {
-    return 'url(/assets/backgrounds/background-9.jpg)';
+    return `url(${environment.assetsUrl}/backgrounds/background-9.jpg)`;
   }
 }
