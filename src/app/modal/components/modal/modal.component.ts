@@ -45,12 +45,10 @@ export class ModalComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('click', ['$event'])
-  public onClickOutside(e: MouseEvent) {
-    if (!this.persistent) this.dismiss();
-  }
+  public onClick(e: MouseEvent) {
+    const target = e.target as HTMLElement;
 
-  public preventDefault(e: MouseEvent) {
-    e.stopPropagation();
+    if (target.tagName === 'MODAL-WRAPPER' && !this.persistent) this.dismiss();
   }
 
   public close() {
