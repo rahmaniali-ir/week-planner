@@ -1,10 +1,14 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { PlanService } from '../../services/plan.service';
 import { ActionsButtonItem } from './action-button-item';
 
 @Component({
@@ -13,12 +17,32 @@ import { ActionsButtonItem } from './action-button-item';
   styleUrls: ['./actions-button.component.sass'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ActionsButtonComponent {
+export class ActionsButtonComponent implements OnDestroy {
   @Input() open = false;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter();
 
   @Input() actions: ActionsButtonItem[] = [];
   @Output() onSelect: EventEmitter<ActionsButtonItem> = new EventEmitter();
+
+  private clickSubscription$: Subscription;
+
+  constructor(
+    private planService: PlanService,
+    private el: ElementRef<HTMLElement>
+  ) {
+    this.clickSubscription$ = this.planService.click$.subscribe((e) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.closest('actions-button') !== this.el.nativeElement &&
+        this.open
+      )
+        this.toggleOpen();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.clickSubscription$.unsubscribe();
+  }
 
   get isEmpty() {
     return this.actions.length === 0;

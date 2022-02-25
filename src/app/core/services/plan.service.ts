@@ -26,6 +26,7 @@ export class PlanService {
   PBC = new PixelBlockConverter(this.numberOfTimeBlocks);
   plans: Plan[] = [];
 
+  // moving feature
   private originalMovingTiming: Timing | null = null;
   private movingTiming: Timing | null = null;
   private referenceTiming: Timing | null = null;
@@ -36,6 +37,8 @@ export class PlanService {
   movingTimingOffset$: Subject<number> = new Subject();
   private altKey = false;
   private makingNewReference = false;
+
+  click$ = new Subject<MouseEvent>();
 
   constructor(private modalService: ModalService) {
     this.movingTiming$.subscribe((timing) => {
@@ -100,6 +103,10 @@ export class PlanService {
 
     window.addEventListener('keyup', (e) => {
       this.altKey = false;
+    });
+
+    window.addEventListener('click', (e) => {
+      this.click$.next(e);
     });
 
     window.addEventListener('beforeunload', () => {
