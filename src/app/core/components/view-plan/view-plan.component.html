@@ -1,6 +1,6 @@
 <modal-body>
   <ng-container header>
-    <button (click)="removeTiming()">
+    <button class="small" (click)="removeTiming()">
       <icon name="trash"></icon>
     </button>
   </ng-container>
@@ -53,6 +53,9 @@
   </section>
 
   <ng-container footer>
-    <button (click)="save()">Save</button>
+    <button (click)="save()">
+      <icon name="trash"></icon>
+      <span>Save</span>
+    </button>
   </ng-container>
 </modal-body>

@@ -32,11 +32,30 @@ body
   user-select: none
 
 button
+  backdrop-filter: blur(1px)
   background: none
   border: none
+  border-radius: var(--radius)
   cursor: pointer
   display: inline-flex
   outline: none
+  padding: 10px 12px
+  position: relative
+  transition: background .3s ease, box-shadow .3s ease
+
+  &:hover
+    background: rgba(var(--theme-opposite), .1)
+    box-shadow: var(--shadow)
+
+  &:active
+    transform: scale(.9)
+
+  &.small
+    padding: 8px
 
   icon
+    margin-inline-end: 8px
     pointer-events: none
+
+    &:only-child
+      margin: 0
