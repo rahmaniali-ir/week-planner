@@ -14,6 +14,7 @@ import { TimeBlock } from '../models/timing';
 import { MovingAnchor } from '../types/moving';
 import { Plan, Timing } from '../types/plan';
 import { Breakpoint } from '../types/breakpoint';
+import { backgrounds } from '../backgrounds';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +50,7 @@ export class PlanService {
   private makingNewReference = false;
 
   // general
+  background = backgrounds[0];
   click$ = new Subject<MouseEvent>();
   currentTimeBlock = 0;
 
