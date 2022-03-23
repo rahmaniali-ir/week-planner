@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlanService } from '../../services/plan.service';
+import { Breakpoint } from '../../types/breakpoint';
 
 @Component({
   selector: 'timeline',
@@ -46,5 +47,13 @@ export class TimelineComponent implements OnInit {
     return Math.floor(
       this.caretBlockOffset / this.planService.hourBlockDivider
     );
+  }
+
+  get breakpoints() {
+    return this.planService.breakpoints;
+  }
+
+  getBreakpointOffset(breakpoint: Breakpoint) {
+    return this.planService.getBreakpointOffset(breakpoint) + 'px';
   }
 }

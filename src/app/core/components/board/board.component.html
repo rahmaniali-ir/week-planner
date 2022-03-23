@@ -11,6 +11,13 @@
 
   <main>
     <div
+      *ngFor="let breakpoint of breakpoints"
+      [style.color]="breakpoint.color.hsl"
+      [style.left]="getBreakpointOffset(breakpoint)"
+      class="breakpoint-line"
+    ></div>
+
+    <div
       class="row weekday"
       *ngFor="let weekday of weekdays"
       [class.today]="weekday === currentWeekday"

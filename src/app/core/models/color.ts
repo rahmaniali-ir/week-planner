@@ -1,3 +1,4 @@
+import { minmax } from '../utils';
 import { knownCSSColors } from './color/knownCSSColors';
 import { Random } from './random';
 
@@ -28,6 +29,7 @@ export class Color {
   private h: number = 0;
   private s: number = 0;
   private l: number = 0;
+  private a: number = 1;
 
   public get hue() {
     return this.h;
@@ -41,20 +43,28 @@ export class Color {
     return this.s;
   }
   public set saturation(value: number) {
-    this.s = Math.max(0, Math.min(100, value));
+    this.s = minmax(value, 0, 100);
   }
 
   public get lightness() {
     return this.l;
   }
   public set lightness(value: number) {
-    this.l = Math.max(0, Math.min(100, value));
+    this.l = minmax(value, 0, 100);
   }
 
-  constructor(h: number = 0, s: number = 0, l: number = 0) {
+  public get alpha() {
+    return this.a;
+  }
+  public set alpha(value: number) {
+    this.a = minmax(value, 0, 1);
+  }
+
+  constructor(h: number = 0, s: number = 0, l: number = 0, a: number = 1) {
     this.hue = h;
     this.saturation = s;
     this.lightness = l;
+    this.alpha = a;
   }
 
   public get hsl(): string {
@@ -74,6 +84,10 @@ export class Color {
       this.saturation = Number(s);
       this.lightness = Number(l);
     }
+  }
+
+  public get hsla(): string {
+    return `hsla(${this.h}, ${this.s}%, ${this.l}%, ${this.a})`;
   }
 
   public get hex() {

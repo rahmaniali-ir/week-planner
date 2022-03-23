@@ -7,6 +7,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { PlanService } from '../../services/plan.service';
+import { Breakpoint } from '../../types/breakpoint';
 import { Weekday } from '../../types/weekday';
 
 @Component({
@@ -60,6 +61,18 @@ export class BoardComponent implements OnInit {
       return this.planService.isAltKeyDown ? 'copy' : 'move';
 
     return 'ew-resize';
+  }
+
+  get breakpoints() {
+    return this.planService.breakpoints;
+  }
+
+  get currentTimeBlock() {
+    return this.planService.currentTimeBlock;
+  }
+
+  getBreakpointOffset(breakpoint: Breakpoint) {
+    return this.planService.getBreakpointOffset(breakpoint) + 150 + 'px';
   }
 
   getWeekdayTimings(weekday: Weekday) {

@@ -20,4 +20,14 @@
     [class.at-beginning]="isCaretAtBeginning"
     [class.at-end]="isCaretAtEnd"
   ></span>
+
+  <div
+    *ngFor="let breakpoint of breakpoints"
+    [style.color]="breakpoint.color.hsl"
+    [style.left]="getBreakpointOffset(breakpoint)"
+    [title]="breakpoint?.name"
+    class="breakpoint-icon"
+  >
+    <span></span>
+  </div>
 </main>

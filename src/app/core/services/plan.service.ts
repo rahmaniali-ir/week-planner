@@ -13,6 +13,7 @@ import { Schedule } from '../models/schedule';
 import { TimeBlock } from '../models/timing';
 import { MovingAnchor } from '../types/moving';
 import { Plan, Timing } from '../types/plan';
+import { Breakpoint } from '../types/breakpoint';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,16 @@ export class PlanService {
   newTimingDuration = 16; // 4 hours
   minTimingDuration = 1; // 15 minutes
   PBC = new PixelBlockConverter(this.numberOfTimeBlocks);
+
   plans: Plan[] = [];
+  breakpoints: Breakpoint[] = [
+    {
+      id: 1,
+      color: new Color(27, 100, 60),
+      position: 24,
+      name: 'Morning',
+    },
+  ];
 
   // moving feature
   private originalMovingTiming: Timing | null = null;
@@ -38,7 +48,9 @@ export class PlanService {
   private altKey = false;
   private makingNewReference = false;
 
+  // general
   click$ = new Subject<MouseEvent>();
+  currentTimeBlock = 0;
 
   constructor(private modalService: ModalService) {
     this.movingTiming$.subscribe((timing) => {
@@ -116,6 +128,30 @@ export class PlanService {
     window.addEventListener('blur', () => {
       this.saveToLocalStorage();
     });
+
+    const nowBreakpointColor = new Color(0, 100, 100);
+    nowBreakpointColor.alpha = 0.5;
+    const nowBreakpoint: Breakpoint = {
+      id: 0,
+      name: 'Now',
+      position: 0,
+      color: nowBreakpointColor,
+      immutable: true,
+    };
+    setInterval(() => {
+      const date = new Date();
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+
+      this.currentTimeBlock =
+        (hours * 60 + minutes) / this.eachHourBlockDuration;
+      nowBreakpoint.name = `Now (${hours}: ${minutes})`;
+
+      if (nowBreakpoint.position !== this.currentTimeBlock) {
+        nowBreakpoint.position = this.currentTimeBlock;
+      }
+    }, 1000);
+    this.breakpoints.push(nowBreakpoint);
 
     setTimeout(() => {
       this.loadFromLocalStorage();
@@ -415,5 +451,10 @@ export class PlanService {
 
   removePlan(plan: Plan) {
     this.plans = this.plans.filter((p) => p !== plan);
+  }
+
+  // breakpoints
+  getBreakpointOffset(breakpoint: Breakpoint) {
+    return this.PBC.blockToPixel(breakpoint.position);
   }
 }

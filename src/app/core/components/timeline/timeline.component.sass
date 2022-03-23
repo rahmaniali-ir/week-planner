@@ -91,3 +91,19 @@
 
       &.at-end
         transform: translateX(-75%) translateY(75%) rotate(90deg)
+
+    .breakpoint-icon
+      bottom: 0
+      display: flex
+      position: absolute
+
+      &:hover
+        > span
+          transform: translate(-50%, 50%) rotate(45deg) scale(1.2)
+
+      > span
+        background: currentColor
+        display: flex
+        height: 8px
+        transform: translate(-50%, 50%) rotate(45deg)
+        width: 8px
